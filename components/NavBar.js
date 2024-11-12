@@ -32,6 +32,7 @@ const NavBar = () => {
         tabBarActiveTintColor: styles.tabBarActiveTintColor,
         tabBarInactiveTintColor: styles.tabBarInactiveTintColor,
       })}
+      initialRouteName="Home"
     >
       <Tab.Screen name="Friends">
         {(props) => (

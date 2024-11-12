@@ -1,40 +1,37 @@
 // screens/HomeScreen.js
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/Button";
-import CalendarComponent from "../components/CalendarComponent"; // Import the CalendarComponent
+import CalendarComponent from "../components/CalendarComponent";
+import EventsListComponent from "../components/EventListComponent";
 import { commonStyles } from "../styles/commonStyles";
 
 const HomeScreen = ({ navigation }) => {
+  const profileImagePath =
+    "asset:/profile_pics/DALL·E 2024-11-12 18.44.41 - A Persona 5-inspired profile icon featuring a cute, bold black silhouette of a puffin with a round, soft shape to make it appear adorable. The silhoue.webp"; // Placeholder image URL
+
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       {/* Top bar with profile and notifications icons */}
       <View style={styles.topBar}>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Ionicons name="person-outline" size={24} color="#fff" />
+          <View style={styles.profileImageContainer}>
+            <Image
+              source={require("../assets/profile_pics/SEAL.webp")}
+              style={styles.profileImage}
+            />
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
-          <Ionicons name="notifications" size={24} color="#fff" />
+          <Ionicons name="notifications" size={26} color="#fff" />
         </TouchableOpacity>
       </View>
+      {/* Calendar Component */}
       <CalendarComponent />
-
+      {/* Events List Component */}
+      <EventsListComponent />
       {/* Additional navigation buttons or content */}
-      <View style={commonStyles.container}>
-        <Button
-          title="Go to Events"
-          onPress={() => navigation.navigate("Events")}
-        />
-        <Button
-          title="Go to Friends"
-          onPress={() => navigation.navigate("Friends")}
-        />
-        <Button
-          title="Go to Groups"
-          onPress={() => navigation.navigate("Groups")}
-        />
-      </View>
     </View>
   );
 };
@@ -44,12 +41,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: "10%",
+    marginTop: "15%",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+  profileImageContainer: {
+    width: 44, // Outer container is slightly larger than the image
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 3, // Border width for high contrast
+    borderColor: "#000", // High-contrast border color
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: "cover",
   },
 });
 

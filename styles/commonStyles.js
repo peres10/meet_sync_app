@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backgroundColor: "transparent",
@@ -42,28 +42,6 @@ const commonStyles = StyleSheet.create({
   },
 });
 
-//NavBar Styles
-// const navBarStyles = StyleSheet.create({
-//   navBar: {
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     backgroundColor: "#5c8e85",
-//     paddingVertical: 10,
-//   },
-//   navButton: {
-//     alignItems: "center",
-//   },
-//   icon: {
-//     fontSize: 24,
-//     color: "#fff",
-//   },
-//   label: {
-//     color: "#fff",
-//     fontSize: 12,
-//     marginTop: 4,
-//   },
-// });
-
 const navBarStyles = StyleSheet.create({
   tabBarStyle: {
     backgroundColor: "#5c8e85",
@@ -91,7 +69,9 @@ const calendarStyles = StyleSheet.create({
     padding: 10,
   },
   header: {
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 10,
   },
   monthText: {
@@ -99,14 +79,25 @@ const calendarStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
+  weekDaysContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 10,
+  },
+  weekDayText: {
+    width: "14.28%", // 7 columns
+    textAlign: "center",
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#666",
+  },
   daysContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    paddingTop: 10,
   },
   day: {
-    width: "14.28%", // Seven columns for each day of the week
+    width: "14.28%", // 7 columns
     alignItems: "center",
     paddingVertical: 8,
   },
@@ -114,9 +105,12 @@ const calendarStyles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  otherMonthDayText: {
+    color: "#aaa", // Lighter color for other month days
+  },
   currentDay: {
-    backgroundColor: "#00c6ff", // Circle color for the current day
-    borderRadius: 20, // Circle background
+    backgroundColor: "#3fb59e",
+    borderRadius: 50,
     padding: 8,
   },
   currentDayText: {
@@ -125,4 +119,60 @@ const calendarStyles = StyleSheet.create({
   },
 });
 
-export { commonStyles, navBarStyles, calendarStyles };
+// components/EventTComponent.js
+const eventStyles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    elevation: 4,
+    overflow: "hidden",
+    marginVertical: 20,
+    padding: 10,
+    flex: 1,
+  },
+  header: {
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  listContent: {
+    paddingVertical: 10,
+  },
+  eventItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+  },
+  eventInfo: {
+    flex: 1, // Allows event info to take up available space on the left
+  },
+  eventTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  eventDate: {
+    fontSize: 14,
+    color: "#666",
+  },
+  daysLeft: {
+    fontSize: 10,
+    fontWeight: "bold",
+    fontStyle: "italic",
+    color: "#c6c0be",
+    textAlign: "right",
+    marginRight: "2%",
+  },
+  daysNumber: {
+    fontSize: 40,
+  },
+});
+
+export { commonStyles, navBarStyles, calendarStyles, eventStyles };
