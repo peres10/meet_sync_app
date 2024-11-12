@@ -1,10 +1,14 @@
 // styles/commonStyles.js
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+export const screenWidth = Dimensions.get("window").width;
+export const screenHeight = Dimensions.get("window").height;
+
+
 
 const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backgroundColor: "transparent",
