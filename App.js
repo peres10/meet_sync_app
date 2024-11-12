@@ -1,5 +1,5 @@
 // App.js
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import GradientBackground from "./components/GradientBackground";
@@ -13,10 +13,13 @@ import NotificationsScreen from "./screens/NotificationsScreen";
 const Stack = createStackNavigator();
 
 const App = () => {
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        
+      <Stack.Navigator
+        initialRouteName="Splash"
+        screenOptions={{ headerShown: false }}
+      >
         {/* Splash Screen with Gradient */}
         <Stack.Screen name="Splash">
           {(props) => (
@@ -25,7 +28,7 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-        
+
         {/* Login Screen with Gradient */}
         <Stack.Screen name="Login">
           {(props) => (
@@ -68,10 +71,35 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: "center",
+      marginTop: 48,
+  },
+  text: {
+      fontWeight:"bold",
+      textAlign:"center",
+      fontSize:24,
+  },
+  button_text: {
+      textAlign:"center",
+      fontSize:24,
+      color:"#1976d2"
+  },
+  button_container: {
+      borderRadius: 15,
+      flexDirection: "row",
+      margin: 16,
+      padding:24,
+      justifyContent:"center",
+      backgroundColor:"#e6e6e6"
+  },
+})
 
 export default App;
