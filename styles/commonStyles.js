@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    //justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backgroundColor: "transparent",
@@ -17,10 +17,10 @@ const commonStyles = StyleSheet.create({
     backgroundColor: "rgba(255, 0, 0, 0.05)", // Optional overlay color for effect
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   input: {
     width: "100%",
@@ -34,7 +34,7 @@ const commonStyles = StyleSheet.create({
     padding: 15,
     borderRadius: 25,
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 20,
   },
   buttonText: {
     color: "#fff",
