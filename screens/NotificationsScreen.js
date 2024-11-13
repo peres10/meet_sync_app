@@ -12,12 +12,9 @@ const NotificationsScreen = ({ navigation }) => {
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backButton} 
         onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Home" }],
-          })
+          navigation.goBack()
         }
       >
         <Icon name="arrow-back" size={30} color="white" />

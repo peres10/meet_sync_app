@@ -11,7 +11,7 @@ import { navBarStyles as styles } from "../styles/commonStyles"; // Custom style
 
 const Tab = createBottomTabNavigator();
 
-const NavBar = () => {
+const NavBar = ({ onLogout }) => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -50,7 +50,7 @@ const NavBar = () => {
       <Tab.Screen name="Home">
         {(props) => (
           <GradientBackground>
-            <HomeScreen {...props} />
+            <HomeScreen {...props} onLogout={onLogout}/>
           </GradientBackground>
         )}
       </Tab.Screen>

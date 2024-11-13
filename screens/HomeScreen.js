@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import CalendarComponent from "../components/CalendarComponent"; // Import the CalendarComponent
 import { commonStyles } from "../styles/commonStyles";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, onLogout }) => {
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       {/* Top bar with profile and notifications icons */}
@@ -33,6 +33,10 @@ const HomeScreen = ({ navigation }) => {
         <Button
           title="Go to Groups"
           onPress={() => navigation.navigate("Groups")}
+        />
+        <Button
+          title="Logout(temporary button)"
+          onPress={() => onLogout()}
         />
       </View>
     </View>
