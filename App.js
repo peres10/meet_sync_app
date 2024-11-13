@@ -15,8 +15,10 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        
+      <Stack.Navigator
+        initialRouteName="Splash"
+        screenOptions={{ headerShown: false }}
+      >
         {/* Splash Screen with Gradient */}
         <Stack.Screen name="Splash">
           {(props) => (
@@ -25,7 +27,7 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-        
+
         {/* Login Screen with Gradient */}
         <Stack.Screen name="Login">
           {(props) => (
@@ -34,7 +36,6 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-
         {/* Register Screen with Gradient */}
         <Stack.Screen name="Register">
           {(props) => (
@@ -43,7 +44,6 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-
         {/* Main NavBar (Bottom Tab Navigation) with Gradient */}
         <Stack.Screen name="NavBar">
           {(props) => (
@@ -52,9 +52,8 @@ const App = () => {
             </GradientBackground>
           )}
         </Stack.Screen>
-
         {/* Profile and Notifications Screens with Gradient */}
-        <Stack.Screen name="Profile">
+        {/* <Stack.Screen name="Profile">
           {(props) => (
             <GradientBackground>
               <ProfileScreen {...props} />
@@ -67,8 +66,7 @@ const App = () => {
               <NotificationsScreen {...props} />
             </GradientBackground>
           )}
-        </Stack.Screen>
-
+        </Stack.Screen> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

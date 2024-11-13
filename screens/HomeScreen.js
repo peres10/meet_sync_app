@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     borderWidth: 3, // Border width for high contrast
-    borderColor: "#000", // High-contrast border color
+    borderColor: "#fff", // High-contrast border color
     justifyContent: "center",
     alignItems: "center",
   },
