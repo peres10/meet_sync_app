@@ -7,7 +7,6 @@ import NotificationsScreen from "../screens/NotificationsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import GroupsScreen from "../screens/GroupsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import NotificationsScreen from "../screens/NotificationsScreen";
 import CustomFooter from "./CustomFooter";
 
 const Stack = createStackNavigator();
@@ -23,9 +22,9 @@ const MainScreens = () => (
   </GradientBackground>
 );
 
-const ProfileScreenWithFooter = () => (
+const ProfileScreenWithFooter = ({onLogout}) => (
   <GradientBackground style={{ flex: 1 }}>
-    <ProfileScreen />
+    <ProfileScreen onLogout={onLogout}/>
     <CustomFooter />
   </GradientBackground>
 );
@@ -34,7 +33,8 @@ const NavBar = ({ onLogout }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={MainScreens} />
-      <Stack.Screen name="Profile" component={ProfileScreenWithFooter} />
+      <Stack.Screen name="Profile" 
+        children={() => <ProfileScreenWithFooter onLogout={onLogout}/> }/>
       <Stack.Screen name="Notifications">
         {(props) => (
           <GradientBackground>

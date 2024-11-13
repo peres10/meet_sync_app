@@ -7,7 +7,7 @@ import CalendarComponent from "../components/CalendarComponent";
 import EventsListComponent from "../components/EventListComponent";
 import { commonStyles } from "../styles/commonStyles";
 
-const HomeScreen = ({ navigation, onLogout }) => {
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       {/* Top bar with profile and notifications icons */}

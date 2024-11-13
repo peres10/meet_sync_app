@@ -8,6 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 // Get the screen width and height
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const ProfileScreen = () => {
+const ProfileScreen = ({onLogout}) => {
   const navigation = useNavigation();
 
   const friends = [
@@ -109,6 +110,8 @@ const ProfileScreen = () => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
+
+        <Button title="temporary log out" onPress={onLogout}></Button>
       </View>
     </View>
   );
