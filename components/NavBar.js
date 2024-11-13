@@ -14,8 +14,8 @@ const Stack = createStackNavigator();
 const MainScreens = () => (
   <GradientBackground style={{ flex: 1 }}>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Friends" component={FriendsScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Friends" component={FriendsScreen} />
       <Stack.Screen name="Groups" component={GroupsScreen} />
     </Stack.Navigator>
     <CustomFooter />

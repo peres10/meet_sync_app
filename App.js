@@ -21,7 +21,7 @@ const App = () => {
           <>
             {/****** MAIN NAVIGATION OF THE APP ******/}
             <Stack.Screen
-              name="Main"
+              name="MainApp"
               children={() => <NavBar onLogout={() => setIsLoggedIn(false)} />}
             />
           </>
