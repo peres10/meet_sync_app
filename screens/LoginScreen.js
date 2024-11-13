@@ -8,13 +8,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import Checkbox from "expo-checkbox";
+
 import Button from "../components/Button";
 import {
   commonStyles,
   screenHeight,
   screenWidth,
 } from "../styles/commonStyles";
-import Icon from "react-native-vector-icons/Ionicons";
 
 const LoginScreen = ({ navigation, onLogin }) => {
   return (
@@ -37,31 +39,36 @@ const LoginScreen = ({ navigation, onLogin }) => {
       />
       <View style={styles.content_box}>
         <Text style={styles.titleText}>Login</Text>
-        <TextInput style={styles.input} placeholder="Username" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <Button
-          style={styles.button}
-          title="Login"
-          onPress={onLogin}
-        />
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Email Address</Text>
+          <TextInput style={styles.input} placeholder="name@example.com" />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="********"
+            secureTextEntry
+          />
+        </View>
+
+        <View style={{}}>
+          <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+        </View>
+
+        <Button style={styles.button} title="Login" onPress={onLogin} />
       </View>
       <TouchableOpacity
+        style={styles.linkContainer}
         onPress={() =>
           navigation.reset({
-            index: 1, // "Register" will be at the top
-            routes: [
-              { name: "Splash" }, // Bottom of the stack
-              { name: "Register" }, // Top of the stack
-            ],
+            index: 1,
+            routes: [{ name: "Splash" }, { name: "Register" }],
           })
         }
       >
-        <Text style={styles.linkText}>Don’t have an account?</Text>
-        <Text style={styles.linkText}>Sign up</Text>
+        <Text style={styles.linkText1}>Don’t have an account?</Text>
+        <Text style={styles.linkText2}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -70,11 +77,11 @@ const LoginScreen = ({ navigation, onLogin }) => {
 const styles = StyleSheet.create({
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.6,
+    height: screenHeight * 0.55,
     alignItems: "center",
     padding: 20,
-    backgroundColor: "rgba(255,255,255,0.5)",
-    borderRadius: 50,
+    backgroundColor: "rgba(255, 255, 255, 0.40)",
+    borderRadius: 67,
   },
   logo_log_reg: {
     marginTop: "10%",
@@ -85,16 +92,23 @@ const styles = StyleSheet.create({
   },
   titleText: {
     marginTop: "5%",
-    fontSize: 35,
+    fontSize: 42,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 20,
   },
+  inputContainer: {
+    width: "90%",
+    marginBottom: 20,
+  },
+  inputLabel: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginBottom: 4,
+  },
   input: {
     fontSize: 20,
-    width: "100%",
     padding: 20,
-    marginTop: 40,
     borderRadius: 12,
     backgroundColor: "#fff",
   },
@@ -106,10 +120,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 50,
   },
-  linkText: {
+  linkContainer: {
+    position: "absolute",
+    bottom: 40, // Adjust this to control the distance from the bottom
     alignSelf: "center",
+    alignItems: "center",
+  },
+  forgotPasswordText: {
+    textDecorationLine: "underline",
+    color: "#44635D",
+    fontSize: 15,
+  },
+  linkText1: {
     fontSize: 20,
-    color: "blue",
+    color: "#303030",
+  },
+  linkText2: {
+    fontSize: 20,
+    color: "#303030",
+    textDecorationLine: "underline",
   },
   backButton: {
     position: "absolute",

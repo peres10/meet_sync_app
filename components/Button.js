@@ -1,4 +1,3 @@
-// components/Button.js
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#004d40',
     padding: 20,
-    borderRadius: 25,
+    borderRadius: 32,
     alignItems: 'center',
     marginVertical: 10,
   },

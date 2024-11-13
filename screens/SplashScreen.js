@@ -1,11 +1,11 @@
 // screens/SplashScreen.js
 import React, { useEffect } from "react";
 import { View, Text, Dimensions, Image, StyleSheet } from "react-native";
-import Button from "../components/Button";
-import { commonStyles } from "../styles/commonStyles";
 
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
+import Button from "../components/Button";
+
+import { commonStyles, screenWidth, screenHeight } from "../styles/commonStyles";
+
 
 const SplashScreen = ({ navigation }) => {
   const { width: screenWidth } = Dimensions.get("window");
@@ -36,7 +36,7 @@ export default SplashScreen;
 
 const styles = StyleSheet.create({
   titleText: {
-    fontSize: 32,
+    fontSize: 42,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 40,
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
   bottomBox: {
     position: "absolute",
     bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "rgba(255, 255, 255, 0.40)",
     width: screenWidth,
-    borderRadius: 30,
+    borderRadius: 67,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

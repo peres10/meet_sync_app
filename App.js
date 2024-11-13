@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,6 +10,8 @@ import ProfileScreen from "./screens/ProfileScreen";
 import NotificationsScreen from "./screens/NotificationsScreen";
 import GradientBackground from "./components/GradientBackground";
 import NavBar from "./components/NavBar";
+
+import { Inter_900Black, useFonts } from "@expo-google-fonts/inter";
 
 const Stack = createStackNavigator();
 
@@ -54,7 +56,7 @@ const App = () => {
             <Stack.Screen name="Login" options={{ gestureEnabled: false }}>
               {(props) => (
                 <GradientBackground>
-                  <LoginScreen {...props} onLogin={() => setIsLoggedIn(true)} />
+                  <LoginScreen {...props} onLogin={() => setIsLoggedIn(false)} />
                 </GradientBackground>
               )}
             </Stack.Screen>
