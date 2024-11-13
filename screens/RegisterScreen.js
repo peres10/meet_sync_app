@@ -1,5 +1,4 @@
-// screens/RegisterScreen.js
-import React from "react";
+import { React, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Button from "../components/Button";
 import {
@@ -16,7 +16,42 @@ import {
 } from "../styles/commonStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const RegisterScreen = ({ navigation }) => {
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from "../firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
+const RegisterScreen = ({ navigation, onLogin }) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    try {
+      const userCreds = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const user = userCreds.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: username,
+        email: email,
+        phoneNumber: phoneNumber,
+        createdAt: new Date(),
+        uid: user.uid,
+      });
+
+      Alert.alert("Registration Successful");
+      onLogin();
+    } catch (error) {
+      Alert.alert("Registration Error", error.message);
+    }
+  };
+
   return (
     <View style={commonStyles.container}>
       {/* Back Arrow Button */}
@@ -38,21 +73,23 @@ const RegisterScreen = ({ navigation }) => {
       />
       <View style={styles.content_box}>
         <Text style={styles.titleText}>Sign Up</Text>
-        {/* <TextInput style={styles.input} placeholder="Username" />
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <TextInput style={styles.input} placeholder="Phone Number" /> */}
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Username</Text>
-          <TextInput style={styles.input} placeholder="username" />
+          <TextInput
+            style={styles.input}
+            placeholder="username"
+            value={username}
+            onChangeText={setUsername}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Email Address</Text>
-          <TextInput style={styles.input} placeholder="name@example.com" />
+          <TextInput
+            style={styles.input}
+            placeholder="name@example.com"
+            value={email}
+            onChangeText={setEmail}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Password</Text>
@@ -60,13 +97,24 @@ const RegisterScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="********"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Phone Number</Text>
-          <TextInput style={styles.input} placeholder="(123) 456-789" />
+          <TextInput
+            style={styles.input}
+            placeholder="(123) 456-789"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+          />
         </View>
-        <Button style={styles.button} title="Register" />
+        <Button
+          style={styles.button}
+          title="Register"
+          onPress={handleRegister}
+        />
       </View>
       <TouchableOpacity
         style={styles.linkContainer}

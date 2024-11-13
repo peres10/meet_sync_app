@@ -1,5 +1,4 @@
-// screens/LoginScreen.js
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Image,
@@ -7,9 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Checkbox from "expo-checkbox";
 
 import Button from "../components/Button";
 import {
@@ -18,7 +17,25 @@ import {
   screenWidth,
 } from "../styles/commonStyles";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebaseConfig";
+
 const LoginScreen = ({ navigation, onLogin }) => {
+  const [email, setEmail] = useState(""); // For storing email input
+  const [password, setPassword] = useState(""); // For storing password input
+  const [loading, setLoading] = useState(false); // For loading state
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      onLogin();
+    } catch (error) {
+      setLoading(false);
+      Alert.alert("Login Error", "Wrong credentials");
+    }
+  };
+
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
@@ -37,11 +54,17 @@ const LoginScreen = ({ navigation, onLogin }) => {
         source={require("../assets/logo_png_no_color.png")}
         style={styles.logo_log_reg}
       />
+
       <View style={styles.content_box}>
         <Text style={styles.titleText}>Login</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Email Address</Text>
-          <TextInput style={styles.input} placeholder="name@example.com" />
+          <TextInput
+            style={styles.input}
+            placeholder="name@example.com"
+            value={email}
+            onChangeText={setEmail}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Password</Text>
@@ -49,6 +72,8 @@ const LoginScreen = ({ navigation, onLogin }) => {
             style={styles.input}
             placeholder="********"
             secureTextEntry
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
 
@@ -56,8 +81,9 @@ const LoginScreen = ({ navigation, onLogin }) => {
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </View>
 
-        <Button style={styles.button} title="Login" onPress={onLogin} />
+        <Button style={styles.button} title="Login" onPress={handleLogin}/>
       </View>
+
       <TouchableOpacity
         style={styles.linkContainer}
         onPress={() =>

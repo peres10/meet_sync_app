@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -47,7 +47,10 @@ const App = () => {
             <Stack.Screen name="Register" options={{ gestureEnabled: false }}>
               {(props) => (
                 <GradientBackground>
-                  <RegisterScreen {...props} />
+                  <RegisterScreen
+                    {...props}
+                    onLogin={() => setIsLoggedIn(true)}
+                  />
                 </GradientBackground>
               )}
             </Stack.Screen>
