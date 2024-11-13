@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons"; // Icon library for tab icons
 import GradientBackground from "./GradientBackground"; // Gradient wrapper
 import HomeScreen from "../screens/HomeScreen";
 import EventsScreen from "../screens/EventsScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import GroupsScreen from "../screens/GroupsScreen";
 import { navBarStyles as styles } from "../styles/commonStyles"; // Custom styles for NavBar, if any
@@ -36,6 +37,13 @@ const NavBar = () => {
         {(props) => (
           <GradientBackground>
             <FriendsScreen {...props} />
+          </GradientBackground>
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="Notifications">
+        {(props) => (
+          <GradientBackground>
+            <NotificationsScreen {...props} />
           </GradientBackground>
         )}
       </Tab.Screen>

@@ -56,7 +56,7 @@ const App = () => {
             <Stack.Screen name="Login" options={{ gestureEnabled: false }}>
               {(props) => (
                 <GradientBackground>
-                  <LoginScreen {...props} onLogin={() => setIsLoggedIn(false)} />
+                  <LoginScreen {...props} onLogin={() => setIsLoggedIn(true)} />
                 </GradientBackground>
               )}
             </Stack.Screen>

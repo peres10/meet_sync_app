@@ -38,33 +38,47 @@ const RegisterScreen = ({ navigation }) => {
       />
       <View style={styles.content_box}>
         <Text style={styles.titleText}>Sign Up</Text>
-        <TextInput style={styles.input} placeholder="Username" />
+        {/* <TextInput style={styles.input} placeholder="Username" />
         <TextInput style={styles.input} placeholder="Email" />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
         />
-        <TextInput style={styles.input} placeholder="Phone Number" />
-        <Button
-          style={styles.button}
-          title="Sign Up"
-          onPress={() => navigation.navigate("Home")}
-        />
+        <TextInput style={styles.input} placeholder="Phone Number" /> */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Username</Text>
+          <TextInput style={styles.input} placeholder="username" />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Email Address</Text>
+          <TextInput style={styles.input} placeholder="name@example.com" />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="********"
+            secureTextEntry
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>Phone Number</Text>
+          <TextInput style={styles.input} placeholder="(123) 456-789" />
+        </View>
+        <Button style={styles.button} title="Register" />
       </View>
       <TouchableOpacity
+        style={styles.linkContainer}
         onPress={() =>
           navigation.reset({
-            index: 1, // "Register" will be at the top
-            routes: [
-              { name: "Splash" }, // Bottom of the stack
-              { name: "Login" }, // Top of the stack
-            ],
+            index: 1,
+            routes: [{ name: "Splash" }, { name: "Login" }],
           })
         }
       >
-        <Text style={styles.linkText}>Already have an account?</Text>
-        <Text style={styles.linkText}>Log in</Text>
+        <Text style={styles.linkText1}>Already have an account?</Text>
+        <Text style={styles.linkText2}>Log In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -73,11 +87,11 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.62,
+    height: screenHeight * 0.58,
     alignItems: "center",
     padding: 20,
-    backgroundColor: "rgba(255,255,255,0.5)",
-    borderRadius: 50,
+    backgroundColor: "rgba(255, 255, 255, 0.40)",
+    borderRadius: 67,
   },
   logo_log_reg: {
     marginTop: "10%",
@@ -88,31 +102,53 @@ const styles = StyleSheet.create({
   },
   titleText: {
     marginTop: "5%",
-    fontSize: 35,
+    fontSize: 42,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 10,
   },
+  inputContainer: {
+    width: "90%",
+    marginBottom: 10,
+  },
+  inputLabel: {
+    fontSize: 16,
+    marginLeft: 10,
+    marginBottom: 2,
+  },
   input: {
     fontSize: 20,
-    width: "100%",
-    padding: 15,
-    marginTop: 20,
+    padding: 10,
     borderRadius: 12,
     backgroundColor: "#fff",
   },
   button: {
     backgroundColor: "#004d40",
     padding: 20,
-    paddingHorizontal: "40%",
+    paddingHorizontal: "36%",
     borderRadius: 25,
-    marginTop: "10%",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  linkContainer: {
+    position: "absolute",
+    bottom: 40, // Adjust this to control the distance from the bottom
+    alignSelf: "center",
     alignItems: "center",
   },
-  linkText: {
-    alignSelf: "center",
+  forgotPasswordText: {
+    textDecorationLine: "underline",
+    color: "#44635D",
+    fontSize: 15,
+  },
+  linkText1: {
     fontSize: 20,
-    color: "blue",
+    color: "#303030",
+  },
+  linkText2: {
+    fontSize: 20,
+    color: "#303030",
+    textDecorationLine: "underline",
   },
   backButton: {
     position: "absolute",
