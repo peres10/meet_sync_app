@@ -18,21 +18,39 @@ import {
 } from "../styles/commonStyles";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
+import { useUser } from "../context/UserProvider";
+import { getDoc, doc } from "firebase/firestore";
 
 const LoginScreen = ({ navigation, onLogin }) => {
   const [email, setEmail] = useState(""); // For storing email input
   const [password, setPassword] = useState(""); // For storing password input
-  const [loading, setLoading] = useState(false); // For loading state
+
+  const { setUser } = useUser();
 
   const handleLogin = async () => {
-    setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      onLogin();
+      const userCreds = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCreds.user;
+
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          username: userDoc.data().username,
+          avatarFile: userDoc.data().avatarFile,
+        });
+
+        onLogin();
+      } else {
+        Alert.alert("Error fetching data");
+      }
     } catch (error) {
-      setLoading(false);
       Alert.alert("Login Error", "Wrong credentials");
+      //Alert.alert(error)
     }
   };
 
@@ -81,7 +99,7 @@ const LoginScreen = ({ navigation, onLogin }) => {
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </View>
 
-        <Button style={styles.button} title="Login" onPress={handleLogin}/>
+        <Button style={styles.button} title="Login" onPress={handleLogin} />
       </View>
 
       <TouchableOpacity

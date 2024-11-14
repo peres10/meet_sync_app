@@ -19,6 +19,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { doc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useUser } from "../context/UserProvider";
 
 const RegisterScreen = ({ navigation, onLogin }) => {
   const [username, setUsername] = useState("");
@@ -26,6 +27,8 @@ const RegisterScreen = ({ navigation, onLogin }) => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { setUser } = useUser();
 
   const handleRegister = async () => {
     try {
@@ -43,7 +46,15 @@ const RegisterScreen = ({ navigation, onLogin }) => {
         phoneNumber: phoneNumber,
         createdAt: new Date(),
         uid: user.uid,
+        avatarFile: "BEAR",
       });
+
+      setUser({
+        uid: user.uid,
+        email: user.email,
+        username: username,
+        avatarFile: "BEAR"
+      })
 
       Alert.alert("Registration Successful");
       onLogin();

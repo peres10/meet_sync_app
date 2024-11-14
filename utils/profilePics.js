@@ -1,23 +1,20 @@
-// utils/profilePics.js
-
-export default [
-    require("../assets/profile_pics/AXOLOTL.webp"),
-    require("../assets/profile_pics/BEAR.webp"),
-    require("../assets/profile_pics/CAT.webp"),
-    require("../assets/profile_pics/DOG.webp"),
-    require("../assets/profile_pics/EAGLE.webp"),
-    require("../assets/profile_pics/FOX.webp"),
-    require("../assets/profile_pics/FOX2.webp"),
-    require("../assets/profile_pics/FOX3.webp"),
-    require("../assets/profile_pics/HEDGEHOG.webp"),
-    require("../assets/profile_pics/OWL.webp"),
-    require("../assets/profile_pics/OWL_2.webp"),
-    require("../assets/profile_pics/PENGUIN.webp"),
-    require("../assets/profile_pics/PUFFIN.webp"),
-    require("../assets/profile_pics/RABBIT.webp"),
-    require("../assets/profile_pics/RACCOON.webp"),
-    require("../assets/profile_pics/REINDEER.webp"),
-    require("../assets/profile_pics/SEAL.webp"),
-    require("../assets/profile_pics/WALRUS.webp"),
-  ];
-  
+export default {
+  AXOLOTL: require("../assets/profile_pics/AXOLOTL.webp"),
+  BEAR: require("../assets/profile_pics/BEAR.webp"),
+  CAT: require("../assets/profile_pics/CAT.webp"),
+  DOG: require("../assets/profile_pics/DOG.webp"),
+  EAGLE: require("../assets/profile_pics/EAGLE.webp"),
+  FOX: require("../assets/profile_pics/FOX.webp"),
+  FOX2: require("../assets/profile_pics/FOX2.webp"),
+  FOX3: require("../assets/profile_pics/FOX3.webp"),
+  HEDGEHOG: require("../assets/profile_pics/HEDGEHOG.webp"),
+  OWL: require("../assets/profile_pics/OWL.webp"),
+  OWL_2: require("../assets/profile_pics/OWL_2.webp"),
+  PENGUIN: require("../assets/profile_pics/PENGUIN.webp"),
+  PUFFIN: require("../assets/profile_pics/PUFFIN.webp"),
+  RABBIT: require("../assets/profile_pics/RABBIT.webp"),
+  RACCOON: require("../assets/profile_pics/RACCOON.webp"),
+  REINDEER: require("../assets/profile_pics/REINDEER.webp"),
+  SEAL: require("../assets/profile_pics/SEAL.webp"),
+  WALRUS: require("../assets/profile_pics/WALRUS.webp"),
+};

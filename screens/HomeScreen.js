@@ -2,12 +2,15 @@
 import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Button from "../components/Button";
 import CalendarComponent from "../components/CalendarComponent";
 import EventsListComponent from "../components/EventListComponent";
-import { commonStyles } from "../styles/commonStyles";
+import profilePics from "../utils/profilePics";
+import { useUser } from "../context/UserProvider";
 
 const HomeScreen = ({ navigation }) => {
+
+  const { user } = useUser();
+  
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       {/* Top bar with profile and notifications icons */}
@@ -15,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <View style={styles.profileImageContainer}>
             <Image
-              source={require("../assets/profile_pics/SEAL.webp")}
+              source={user.avatarFile ? profilePics[user.avatarFile] : profilePics.BEAR }
               style={styles.profileImage}
             />
           </View>

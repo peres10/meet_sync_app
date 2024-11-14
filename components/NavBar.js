@@ -57,7 +57,6 @@ const NavBar = ({ onLogout }) => {
       <Stack.Screen name="Main" component={MainScreens} />
       <Stack.Screen name="Profile" 
         children={() => <ProfileScreenWithFooter onLogout={onLogout}/> }/>
-      <Stack.Screen name="Profile" component={ProfileScreenWithFooter} />
       <Stack.Screen name="EditProfile" component={EditProfileScreenWithFooter} />
       <Stack.Screen name="Friends" component={FriendsScreenWithFooter} />
       <Stack.Screen name="Groups" component={GroupsScreenWithFooter} />
