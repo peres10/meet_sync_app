@@ -42,6 +42,7 @@ const LoginScreen = ({ navigation, onLogin }) => {
           email: user.email,
           username: userDoc.data().username,
           avatarFile: userDoc.data().avatarFile,
+          location: userDoc.data().location ? userDoc.data().location : ""
         });
 
         onLogin();

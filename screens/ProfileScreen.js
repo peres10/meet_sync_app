@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Button,
+  ScrollView,
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -122,7 +123,7 @@ const ProfileScreen = ({ onLogout }) => {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, {alignItems: 'center'}]}>
       {/* Back Arrow Icon */}
       <TouchableOpacity
         style={styles.backArrow}
@@ -202,10 +203,9 @@ const ProfileScreen = ({ onLogout }) => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
-
-        <Button title="temporary log out" onPress={onLogout}></Button>
+        <Button style={{}} title="Log Out" onPress={onLogout}></Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -237,14 +237,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   backgroundContainer: {
-    height: screenHeight - 80,
+    //flex: 1,
+    minHeight: screenHeight - 80,  // Set a minimum height
     marginTop: 100,
     paddingTop: 60,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     backgroundColor: "#fff",
     alignItems: "center",
-    paddingBottom: 80,
+    paddingBottom: 100,
   },
   userInfo: {
     alignItems: "center",
