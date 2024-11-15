@@ -19,5 +19,11 @@ export default [
     require("../assets/profile_pics/REINDEER.webp"),
     require("../assets/profile_pics/SEAL.webp"),
     require("../assets/profile_pics/WALRUS.webp"),
+    require("../assets/profile_pics/RED_PANDA.webp"),
+    require("../assets/profile_pics/KOALA.webp"),
+    require("../assets/profile_pics/SLOTH.webp"),
+    require("../assets/profile_pics/LLAMA.webp"),
+    require("../assets/profile_pics/OTTER.webp"),
+    require("../assets/profile_pics/FLAMINGO.webp"),
   ];
   
