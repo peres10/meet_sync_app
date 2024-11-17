@@ -1,9 +1,9 @@
 // screens/NotificationsScreen.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/Ionicons";
-import { commonStyles, screenHeight, screenWidth, navBarStyles } from "../styles/commonStyles";
+import { commonStyles, screenHeight, screenWidth} from "../styles/commonStyles";
 
 const NotificationsScreen = ({ navigation }) => {
   // State to track which text link is currently selected
@@ -61,7 +61,7 @@ const NotificationsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.75,
+    height: screenHeight * 0.90,
     alignItems: "center",
     padding: 20,
     backgroundColor: "rgba(255, 255, 255, 0.40)",
