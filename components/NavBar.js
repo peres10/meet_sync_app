@@ -6,12 +6,41 @@ import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import CustomFooter from "./CustomFooter";
-import EditProfileScreen from "../screens/EditProfile";
+import ProfileScreen from "../screens/ProfileScreen";
 import AddButton from "./AddButton";
+import EditProfileScreen from "../screens/EditProfile";
 
 const Stack = createStackNavigator();
 
-const MainScreens = () => {
+const ProfileScreenWithFooter = ({ onLogout }) => (
+  <GradientBackground style={{ flex: 1 }}>
+    <ProfileScreen onLogout={onLogout} />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const EditProfileScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <EditProfileScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const FriendsScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <FriendsScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const GroupsScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <GroupsScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const MainScreens = (props) => {
   const [isHomeHiddenVisible, setIsHomeHiddenVisible] = useState(false);
 
   // Function to explicitly hide the hidden element
@@ -47,27 +76,6 @@ const MainScreens = () => {
   );
 };
 
-const EditProfileScreenWithFooter = () => (
-  <GradientBackground style={{ flex: 1 }}>
-    <EditProfileScreen />
-    <CustomFooter />
-  </GradientBackground>
-);
-
-const FriendsScreenWithFooter = () => (
-  <GradientBackground style={{ flex: 1 }}>
-    <FriendsScreen />
-    <CustomFooter />
-  </GradientBackground>
-);
-
-const GroupsScreenWithFooter = () => (
-  <GradientBackground style={{ flex: 1 }}>
-    <GroupsScreen />
-    <CustomFooter />
-  </GradientBackground>
-);
-
 const NavBar = ({ onLogout }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -80,15 +88,6 @@ const NavBar = ({ onLogout }) => {
         name="EditProfile"
         component={EditProfileScreenWithFooter}
       />
-      <Stack.Screen name="Friends" component={FriendsScreenWithFooter} />
-      <Stack.Screen name="Groups" component={GroupsScreenWithFooter} />
-      <Stack.Screen name="Notifications">
-        {(props) => (
-          <GradientBackground>
-            <NotificationsScreen {...props} />
-          </GradientBackground>
-        )}
-      </Stack.Screen>
 
       {/* Notifications Screen with AddButton */}
       <Stack.Screen
