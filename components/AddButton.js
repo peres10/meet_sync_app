@@ -4,9 +4,6 @@ import { Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const AddButton = ({ source, onPress }) => (
-  // <TouchableOpacity onPress={onPress} style={styles.container}>
-  //   <Image source={source} style={styles.image} /> 
-  // </TouchableOpacity>
   <TouchableOpacity onPress={onPress} style={styles.container}>
     <Ionicons
       name = {"add"} size={60} style= {styles.icons}

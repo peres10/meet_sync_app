@@ -1,6 +1,5 @@
-// components/EventsComponent.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { eventStyles as styles } from "../styles/commonStyles";
 import { useNavigation } from "@react-navigation/native";
 
@@ -28,35 +27,41 @@ const EventsListComponent = () => {
 
   return (
     <View style={styles.container}>
-        
       <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate("Events")}>
-        <Text style={styles.headerText}>Upcoming Events</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Events")}>
+          <Text style={styles.headerText}>Upcoming Events</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={events}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.eventItem}>
-            <View style={styles.eventInfo}>
-              <Text style={styles.eventTitle}>{item.title}</Text>
-              <Text style={styles.eventDate}>
-                {new Date(item.date).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </Text>
-            </View>
-            <Text style={styles.daysLeft}>
-              in <Text style={styles.daysNumber}>{getDaysLeft(item.date)}</Text>{" "}
-              days
-            </Text>
-          </View>
+          <TouchableOpacity
+      style={styles.eventItem}
+      onPress={() =>
+        navigation.navigate("EventDetail", {
+      eventTitle: item.title,
+      eventDate: item.date,
+    })
+  }
+>
+    <View style={styles.eventInfo}>
+      <Text style={styles.eventTitle}>{item.title}</Text>
+      <Text style={styles.eventDate}>
+        {new Date(item.date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </Text>
+    </View>
+    <Text style={styles.daysLeft}>
+      in <Text style={styles.daysNumber}>{getDaysLeft(item.date)}</Text> days
+    </Text>
+  </TouchableOpacity>
         )}
         contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false} // Hide the vertical scrollbar
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

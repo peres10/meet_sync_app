@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import GradientBackground from "./GradientBackground";
 import HomeScreen from "../screens/HomeScreen";
 import EventsScreen from "../screens/EventsScreen";
+import EventDetailScreen from "../screens/EventDetailScreen"
 import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -114,15 +115,6 @@ const MainScreens = (props) => {
         )}
       />
 
-    {/* <Stack.Screen
-        name="NewEventScreen"
-        children={(props) => (
-          <GradientBackground style={{ flex: 1 }}>
-            <NewEventScreen {...props} />
-            <CustomFooter />
-          </GradientBackground>
-        )}
-      /> */}
 
       {/* Friends Screen with AddButton */}
       <Stack.Screen
@@ -197,6 +189,21 @@ const NavBar = ({ onLogout }) => {
             <AddButton
               source={require("../assets/favicon.png")}
               onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+
+      <Stack.Screen
+        name="EventDetail"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <EventDetailScreen {...props} />
+            <AddButton
+                name={"add"}
+              onPress={() => props.navigation.navigate("NewEventScreen")}
             />
             <CustomFooter />
           </GradientBackground>
