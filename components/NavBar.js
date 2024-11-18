@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import GradientBackground from "./GradientBackground";
 import HomeScreen from "../screens/HomeScreen";
 import EventsScreen from "../screens/EventsScreen";
+import EventDetailScreen from "../screens/EventDetailScreen"
 import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -45,9 +46,13 @@ const GroupsScreenWithFooter = () => (
 
 const MainScreens = (props) => {
   const [isHomeHiddenVisible, setIsHomeHiddenVisible] = useState(false);
+  const [isAddButtonVisible, setIsAddButtonVisible] = useState(true); // State for AddButton visibility
 
   // Function to explicitly hide the hidden element
   const hideHiddenElement = () => setIsHomeHiddenVisible(false);
+
+  // Function to show AddButton again
+  const showAddButton = () => setIsAddButtonVisible(true);
 
   return (
     <GradientBackground style={{ flex: 1 }}>
@@ -62,24 +67,33 @@ const MainScreens = (props) => {
                 toggleHiddenElement={() =>
                   setIsHomeHiddenVisible(!isHomeHiddenVisible)
                 }
-                hideHiddenElement={hideHiddenElement} // Pass the hide function
+                hideHiddenElement={() => {
+                  hideHiddenElement();
+                  showAddButton(); // Show AddButton when hidden element is closed
+                }}
+                showAddButton={showAddButton} // Pass the showAddButton function
               />
-              <AddButton
-                source={require("../assets/plus.png")}
-                onPress={() => setIsHomeHiddenVisible(!isHomeHiddenVisible)}
-              />
+              {isAddButtonVisible && (
+                <AddButton
+                  name={"add"}
+                  onPress={() => {
+                    setIsHomeHiddenVisible(!isHomeHiddenVisible);
+                    setIsAddButtonVisible(false); // Hide the AddButton on press
+                  }}
+                />
+              )}
               <CustomFooter />
             </>
           )}
         />
- <Stack.Screen
+<Stack.Screen
         name="Notifications"
         children={(props) => (
           <GradientBackground style={{ flex: 1 }}>
             <NotificationsScreen {...props} />
             <AddButton
-              source={require("../assets/favicon.png")}
-              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+                name={"add"}
+                onPress={() => props.navigation.navigate("Home")}
             />
             <CustomFooter />
           </GradientBackground>
@@ -93,13 +107,14 @@ const MainScreens = (props) => {
           <GradientBackground style={{ flex: 1 }}>
             <EventsScreen {...props} />
             <AddButton
-              source={require("../assets/favicon.png")}
-              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+                name={"add"}
+                onPress={() => props.navigation.navigate("NewEventScreen")}
             />
             <CustomFooter />
           </GradientBackground>
         )}
       />
+
 
       {/* Friends Screen with AddButton */}
       <Stack.Screen
@@ -108,8 +123,8 @@ const MainScreens = (props) => {
           <GradientBackground style={{ flex: 1 }}>
             <FriendsScreen {...props} />
             <AddButton
-              source={require("../assets/favicon.png")}
-              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+                name={"add"}
+              onPress={() => props.navigation.navigate("Home")}
             />
             <CustomFooter />
           </GradientBackground>
@@ -123,8 +138,8 @@ const MainScreens = (props) => {
           <GradientBackground style={{ flex: 1 }}>
             <GroupsScreen {...props} />
             <AddButton
-              source={require("../assets/favicon.png")}
-              onPress={() => props.navigation.navigate("Home")} // Navigate to Home screen
+                name={"add"}
+              onPress={() => props.navigation.navigate("Home")}
             />
             <CustomFooter />
           </GradientBackground>
@@ -134,6 +149,8 @@ const MainScreens = (props) => {
     </GradientBackground>
   );
 };
+
+
 
 const NavBar = ({ onLogout }) => {
   return (
@@ -163,21 +180,6 @@ const NavBar = ({ onLogout }) => {
         )}
       />
 
-      {/* Events Screen with AddButton */}
-        <Stack.Screen
-        name="Events"
-        children={(props) => (
-          <GradientBackground style={{ flex: 1 }}>
-            <EventsScreen {...props} />
-            <AddButton
-              source={require("../assets/favicon.png")}
-              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
-            />
-            <CustomFooter />
-          </GradientBackground>
-        )}
-      />
-
       {/* Friends Screen with AddButton */}
       <Stack.Screen
         name="Friends"
@@ -187,6 +189,21 @@ const NavBar = ({ onLogout }) => {
             <AddButton
               source={require("../assets/favicon.png")}
               onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+
+      <Stack.Screen
+        name="EventDetail"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <EventDetailScreen {...props} />
+            <AddButton
+                name={"add"}
+              onPress={() => props.navigation.navigate("NewEventScreen")}
             />
             <CustomFooter />
           </GradientBackground>

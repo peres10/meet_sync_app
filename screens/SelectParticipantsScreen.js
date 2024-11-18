@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
-const { width: screenWidth } = Dimensions.get("window");
+import {screenHeight, screenWidth } from "../styles/commonStyles";
+import GradientBackground from "../components/GradientBackground";
 
 const SelectParticipantsScreen = () => {
   const navigation = useNavigation();
@@ -64,10 +64,11 @@ const SelectParticipantsScreen = () => {
   };
 
   return (
+    <GradientBackground style={{ flex: 1 }}>
     <View style={styles.container}>
       {/* Back Arrow */}
       <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color="#333" />
+        <Ionicons name="arrow-back" size={35} color="#e9e9e9" />
       </TouchableOpacity>
 
       {/* Header */}
@@ -90,9 +91,10 @@ const SelectParticipantsScreen = () => {
         keyExtractor={(item) => item.id}
         numColumns={3}
         contentContainerStyle={styles.listContainer}
+        style={styles.participantContainer} // Added style prop
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.participantContainer}
+            style={styles.participants}
             onPress={() => toggleSelection(item.id)}
           >
             <Image source={item.image} style={styles.participantImage} />
@@ -112,22 +114,32 @@ const SelectParticipantsScreen = () => {
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
     </View>
+    </GradientBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:"10%",
+    width: "100%",
     flex: 1,
+  },
+  participantContainer:{
+    width: screenWidth,
+    height: 10,
+    alignContent: "center",
     backgroundColor: "#f5f5f5",
+    borderRadius:30,
+    marginTop:"5%"
   },
   backArrow: {
     position: "absolute",
-    top: 50,
+    top: "3%",
     left: 20,
     zIndex: 10,
   },
   header: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 20,
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 20,
     marginHorizontal: 16,
     marginBottom: 10,
     borderWidth: 1,
@@ -146,17 +158,18 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     marginLeft: 10,
+    fontSize: 20,
     flex: 1,
   },
   listContainer: {
     paddingHorizontal: 16,
     paddingBottom: 100,
   },
-  participantContainer: {
+  participants: {
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
-    width: screenWidth / 3 - 20,
+    width: screenWidth / 4,
   },
   participantImage: {
     width: 80,
@@ -186,8 +199,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
-    marginHorizontal: 16,
-    marginBottom: 20,
+    marginHorizontal: 70,
+    marginBottom: "8%",
+    marginTop: "10%",
   },
   saveButtonText: {
     color: "#fff",
