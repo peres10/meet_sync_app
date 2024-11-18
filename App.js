@@ -1,74 +1,69 @@
-// App.js
-import React from "react";
+import React, { useState } from "react";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import GradientBackground from "./components/GradientBackground";
+
 import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import NavBar from "./components/NavBar"; // Bottom tab navigator with main screens
-import ProfileScreen from "./screens/ProfileScreen";
-import NotificationsScreen from "./screens/NotificationsScreen";
+import GradientBackground from "./components/GradientBackground";
+import NavBar from "./components/NavBar";
+import { UserProvider, useUser } from "./context/UserProvider";
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Splash"
-        screenOptions={{ headerShown: false }}
-      >
-        {/* Splash Screen with Gradient */}
-        <Stack.Screen name="Splash">
-          {(props) => (
-            <GradientBackground>
-              <SplashScreen {...props} />
-            </GradientBackground>
-          )}
-        </Stack.Screen>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-        {/* Login Screen with Gradient */}
-        <Stack.Screen name="Login">
-          {(props) => (
-            <GradientBackground>
-              <LoginScreen {...props} />
-            </GradientBackground>
+  return (
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isLoggedIn ? (
+            <>
+              {/****** MAIN NAVIGATION OF THE APP ******/}
+              <Stack.Screen
+                name="MainApp"
+                children={() => <NavBar onLogout={() => setIsLoggedIn(false)} />}
+              />
+            </>
+          ) : (
+            <>
+              {/****** NOT LOGGED NAVIGATION OF THE APP ******/}
+              <Stack.Screen name="Splash">
+                {(props) => (
+                  <GradientBackground>
+                    <SplashScreen {...props} />
+                  </GradientBackground>
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen name="Login" options={{ gestureEnabled: false }}>
+                {(props) => (
+                  <GradientBackground>
+                    <LoginScreen
+                      {...props}
+                      onLogin={() => setIsLoggedIn(true)}
+                    />
+                  </GradientBackground>
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen name="Register" options={{ gestureEnabled: false }}>
+                {(props) => (
+                  <GradientBackground>
+                    <RegisterScreen
+                      {...props}
+                      onLogin={() => setIsLoggedIn(true)}
+                    />
+                  </GradientBackground>
+                )}
+              </Stack.Screen>
+            </>
           )}
-        </Stack.Screen>
-        {/* Register Screen with Gradient */}
-        <Stack.Screen name="Register">
-          {(props) => (
-            <GradientBackground>
-              <RegisterScreen {...props} />
-            </GradientBackground>
-          )}
-        </Stack.Screen>
-        {/* Main NavBar (Bottom Tab Navigation) with Gradient */}
-        <Stack.Screen name="NavBar">
-          {(props) => (
-            <GradientBackground>
-              <NavBar {...props} />
-            </GradientBackground>
-          )}
-        </Stack.Screen>
-        {/* Profile and Notifications Screens with Gradient */}
-        {/* <Stack.Screen name="Profile">
-          {(props) => (
-            <GradientBackground>
-              <ProfileScreen {...props} />
-            </GradientBackground>
-          )}
-        </Stack.Screen>
-        <Stack.Screen name="Notifications">
-          {(props) => (
-            <GradientBackground>
-              <NotificationsScreen {...props} />
-            </GradientBackground>
-          )}
-        </Stack.Screen> */}
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 };
 

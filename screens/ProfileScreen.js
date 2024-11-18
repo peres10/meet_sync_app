@@ -8,36 +8,107 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Button,
+  ScrollView,
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../context/UserProvider";
+import profilePics from "../utils/profilePics";
 
 // Get the screen width and height
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ onLogout }) => {
   const navigation = useNavigation();
 
-  const friends = [
-    { id: "1", name: "John Doe", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "2", name: "Jane Smith", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "3", name: "Alice", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "4", name: "Bob", image: require("../assets/profile_pics/SEAL.webp") },
-    { id: "5", name: "Carol", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "6", name: "Dave", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "7", name: "Eve", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "8", name: "Frank", image: require("../assets/profile_pics/SEAL.webp") },
-  ];
+  const { user } = useUser();
 
+  // TODO to be deleted
+  const friends = [
+    {
+      id: "1",
+      name: "John Doe",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "3",
+      name: "Alice",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "4",
+      name: "Bob",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
+    {
+      id: "5",
+      name: "Carol",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "6",
+      name: "Dave",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "7",
+      name: "Eve",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "8",
+      name: "Frank",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
+  ];
+  // TODO to be deleted
   const groups = [
-    { id: "1", name: "React Devs", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "2", name: "Music Lovers", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "3", name: "Art Club", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "4", name: "Hiking Group", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "5", name: "Book Club", image: require("../assets/profile_pics/SEAL.webp") },
-    { id: "6", name: "Tech Enthusiasts", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "7", name: "Gaming Buddies", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "8", name: "Movie Fans", image: require("../assets/profile_pics/OWL.webp") },
+    {
+      id: "1",
+      name: "React Devs",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "2",
+      name: "Music Lovers",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "3",
+      name: "Art Club",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "4",
+      name: "Hiking Group",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "5",
+      name: "Book Club",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
+    {
+      id: "6",
+      name: "Tech Enthusiasts",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "7",
+      name: "Gaming Buddies",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "8",
+      name: "Movie Fans",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
   ];
 
   // Updated renderMoreIcon to accept a destination
@@ -48,19 +119,22 @@ const ProfileScreen = () => {
     >
       <Ionicons name="ellipsis-horizontal" size={35} color="#3fb59e" />
       <Text style={styles.listItemText}>More</Text>
-    </TouchableOpacity>
-  );
+    </TouchableOpacity>  );
+
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, {alignItems: 'center'}]}>
       {/* Back Arrow Icon */}
-      <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.backArrow}
+        onPress={() => navigation.goBack()}
+      >
         <Ionicons name="arrow-back" size={30} color="#fff" />
       </TouchableOpacity>
 
       <View style={styles.profileImageContainer}>
         <Image
-          source={require("../assets/profile_pics/SEAL.webp")}
+          source={user.avatarFile ? profilePics[user.avatarFile] : profilePics.BEAR }
           style={styles.profileImage}
         />
       </View>
@@ -69,16 +143,24 @@ const ProfileScreen = () => {
         {/* User Info with Edit Icon */}
         <View style={styles.userInfo}>
           <View style={styles.userNameContainer}>
-            <Text style={styles.userName}>John Doe</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
-              <FontAwesome name="pencil" size={18} color="#3fb59e" style={styles.editIcon} />
+            <Text style={styles.userName}>{user.username}</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <FontAwesome
+                name="pencil"
+                size={18}
+                color="#3fb59e"
+                style={styles.editIcon}
+              />
             </TouchableOpacity>
           </View>
           <Text style={styles.userDetails}>
-            <Ionicons name="mail" size={16} /> johndoe@example.com
+            <Ionicons name="mail" size={16} /> {user.email}
           </Text>
           <Text style={styles.userDetails}>
-            <Ionicons name="location" size={16} /> New York, USA
+            <Ionicons name="location" size={16} />{" "}
+            {user.location ? user.location : ""}
           </Text>
         </View>
 
@@ -121,8 +203,9 @@ const ProfileScreen = () => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
+        <Button style={{}} title="Log Out" onPress={onLogout}></Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -154,14 +237,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   backgroundContainer: {
-    height: screenHeight - 80,
+    //flex: 1,
+    minHeight: screenHeight - 80,  // Set a minimum height
     marginTop: 100,
     paddingTop: 60,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     backgroundColor: "#fff",
     alignItems: "center",
-    paddingBottom: 80,
+    paddingBottom: 100,
   },
   userInfo: {
     alignItems: "center",
