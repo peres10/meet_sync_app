@@ -3,8 +3,17 @@ import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CalendarComponent from "../components/CalendarComponent";
 import EventsListComponent from "../components/EventListComponent";
+import profilePics from "../utils/profilePics";
+import { useUser } from "../context/UserProvider";
 
-const HomeScreen = ({ navigation, isHiddenVisible, toggleHiddenElement, hideHiddenElement }) => {
+const HomeScreen = ({
+  navigation,
+  isHiddenVisible,
+  toggleHiddenElement,
+  hideHiddenElement,
+}) => {
+  const { user } = useUser();
+
   return (
     <View style={{ flex: 1, paddingHorizontal: 20 }}>
       {/* Top bar with profile and notifications icons */}
@@ -12,7 +21,11 @@ const HomeScreen = ({ navigation, isHiddenVisible, toggleHiddenElement, hideHidd
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <View style={styles.profileImageContainer}>
             <Image
-              source={require("../assets/profile_pics/SEAL.webp")}
+              source={
+                user.avatarFile
+                  ? profilePics[user.avatarFile]
+                  : profilePics.BEAR
+              }
               style={styles.profileImage}
             />
           </View>

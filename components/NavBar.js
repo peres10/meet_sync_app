@@ -7,45 +7,96 @@ import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import CustomFooter from "./CustomFooter";
-import AddButton from "./AddButton"; // Import AddButton component
+import ProfileScreen from "../screens/ProfileScreen";
+import AddButton from "./AddButton";
+import EditProfileScreen from "../screens/EditProfile";
+import NewEventScreen from "../screens/NewEventScreen";
+import AddParticipantsScreen from "../screens/SelectParticipantsScreen";
 
 const Stack = createStackNavigator();
 
-const NavBar = ({ navigation }) => {
+const ProfileScreenWithFooter = ({ onLogout }) => (
+  <GradientBackground style={{ flex: 1 }}>
+    <ProfileScreen onLogout={onLogout} />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const EditProfileScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <EditProfileScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const FriendsScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <FriendsScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const GroupsScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <GroupsScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const MainScreens = (props) => {
   const [isHomeHiddenVisible, setIsHomeHiddenVisible] = useState(false);
 
   // Function to explicitly hide the hidden element
   const hideHiddenElement = () => setIsHomeHiddenVisible(false);
 
   return (
+    <GradientBackground style={{ flex: 1 }}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="Home"
+          children={() => (
+            <>
+              <HomeScreen
+                {...props}
+                isHiddenVisible={isHomeHiddenVisible}
+                toggleHiddenElement={() =>
+                  setIsHomeHiddenVisible(!isHomeHiddenVisible)
+                }
+                hideHiddenElement={hideHiddenElement} // Pass the hide function
+              />
+              <AddButton
+                source={require("../assets/plus.png")}
+                onPress={() => setIsHomeHiddenVisible(!isHomeHiddenVisible)}
+              />
+            </>
+          )}
+        />
+        <Stack.Screen name="Friends" component={FriendsScreen} />
+        <Stack.Screen name="Groups" component={GroupsScreen} />
+      </Stack.Navigator>
+      <CustomFooter />
+    </GradientBackground>
+  );
+};
+
+const NavBar = ({ onLogout }) => {
+  return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* Home Screen with AddButton */}
+      <Stack.Screen name="Main" component={MainScreens} />
       <Stack.Screen
-        name="Home"
-        children={(props) => (
-          <GradientBackground style={{ flex: 1 }}>
-            <HomeScreen
-              {...props}
-              isHiddenVisible={isHomeHiddenVisible}
-              toggleHiddenElement={() =>
-                setIsHomeHiddenVisible(!isHomeHiddenVisible)
-              }
-              hideHiddenElement={hideHiddenElement} // Pass the hide function
-            />
-            <AddButton
-              source={require("../assets/plus.png")}
-              onPress={() => setIsHomeHiddenVisible(!isHomeHiddenVisible)}
-            />
-            <CustomFooter />
-          </GradientBackground>
-        )}
+        name="Profile"
+        children={() => <ProfileScreenWithFooter onLogout={onLogout} />}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreenWithFooter}
       />
 
       {/* Notifications Screen with AddButton */}
       <Stack.Screen
         name="Notifications"
         children={(props) => (
-          <GradientBackground style={{ flex: 1 }}>
+          <GradientBackground>
             <NotificationsScreen {...props} />
             <AddButton
               source={require("../assets/favicon.png")}
@@ -86,7 +137,6 @@ const NavBar = ({ navigation }) => {
         )}
       />
 
-      {/* Groups Screen with AddButton */}
       <Stack.Screen
         name="Groups"
         children={(props) => (
@@ -99,6 +149,11 @@ const NavBar = ({ navigation }) => {
             <CustomFooter />
           </GradientBackground>
         )}
+      />
+      <Stack.Screen name="NewEventScreen" component={NewEventScreen} />
+      <Stack.Screen
+        name="SelectParticipantsScreen"
+        component={AddParticipantsScreen}
       />
     </Stack.Navigator>
   );

@@ -9,77 +9,170 @@ import {
   TouchableOpacity,
   Dimensions,
   Button,
+  ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../context/UserProvider";
+import profilePics from "../utils/profilePics";
 
 // Get the screen width and height
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const ProfileScreen = ({onLogout}) => {
+const ProfileScreen = ({ onLogout }) => {
   const navigation = useNavigation();
 
+  const { user } = useUser();
+
+  // TODO to be deleted
   const friends = [
-    { id: "1", name: "John Doe", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "2", name: "Jane Smith", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "3", name: "Alice", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "4", name: "Bob", image: require("../assets/profile_pics/SEAL.webp") },
-    { id: "5", name: "Carol", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "6", name: "Dave", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "7", name: "Eve", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "8", name: "Frank", image: require("../assets/profile_pics/SEAL.webp") },
+    {
+      id: "1",
+      name: "John Doe",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "3",
+      name: "Alice",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "4",
+      name: "Bob",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
+    {
+      id: "5",
+      name: "Carol",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "6",
+      name: "Dave",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "7",
+      name: "Eve",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "8",
+      name: "Frank",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
   ];
-
+  // TODO to be deleted
   const groups = [
-    { id: "1", name: "React Devs", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "2", name: "Music Lovers", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "3", name: "Art Club", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "4", name: "Hiking Group", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "5", name: "Book Club", image: require("../assets/profile_pics/SEAL.webp") },
-    { id: "6", name: "Tech Enthusiasts", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "7", name: "Gaming Buddies", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "8", name: "Movie Fans", image: require("../assets/profile_pics/OWL.webp") },
+    {
+      id: "1",
+      name: "React Devs",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "2",
+      name: "Music Lovers",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "3",
+      name: "Art Club",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "4",
+      name: "Hiking Group",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "5",
+      name: "Book Club",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
+    {
+      id: "6",
+      name: "Tech Enthusiasts",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "7",
+      name: "Gaming Buddies",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "8",
+      name: "Movie Fans",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
   ];
 
-  const renderMoreIcon = () => (
+  // Updated renderMoreIcon to accept a destination
+  const renderMoreIcon = (destination) => (
     <TouchableOpacity
       style={styles.moreIconContainer}
-      onPress={() => navigation.navigate("Friends")}
+      onPress={() => navigation.navigate(destination)}
     >
-      <Ionicons name="ellipsis-horizontal" size={35} color="#4CAF50" />
+      <Ionicons name="ellipsis-horizontal" size={35} color="#3fb59e" />
       <Text style={styles.listItemText}>More</Text>
-    </TouchableOpacity>
-  );
+    </TouchableOpacity>  );
+
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, {alignItems: 'center'}]}>
+      {/* Back Arrow Icon */}
+      <TouchableOpacity
+        style={styles.backArrow}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={30} color="#fff" />
+      </TouchableOpacity>
+
       <View style={styles.profileImageContainer}>
         <Image
-          source={require("../assets/profile_pics/SEAL.webp")}
+          source={user.avatarFile ? profilePics[user.avatarFile] : profilePics.BEAR }
           style={styles.profileImage}
         />
       </View>
 
       <View style={[styles.backgroundContainer, { width: screenWidth }]}>
+        {/* User Info with Edit Icon */}
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>John Doe</Text>
+          <View style={styles.userNameContainer}>
+            <Text style={styles.userName}>{user.username}</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <FontAwesome
+                name="pencil"
+                size={18}
+                color="#3fb59e"
+                style={styles.editIcon}
+              />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.userDetails}>
-            <Ionicons name="mail" size={16} /> johndoe@example.com
+            <Ionicons name="mail" size={16} /> {user.email}
           </Text>
           <Text style={styles.userDetails}>
-            <Ionicons name="location" size={16} /> New York, USA
+            <Ionicons name="location" size={16} />{" "}
+            {user.location ? user.location : ""}
           </Text>
         </View>
 
         {/* Friends List */}
-        <Text style={styles.sectionTitle}>Friends</Text>
+        <Text style={styles.sectionTitle}>Friends:</Text>
         <FlatList
           data={[...friends.slice(0, 7), { id: "more" }]} // Limit to 7 items and add "More" icon
           horizontal
           keyExtractor={(item) => item.id}
           renderItem={({ item }) =>
             item.id === "more" ? (
-              renderMoreIcon() // Render "More" icon at the end
+              renderMoreIcon("Friends") // Navigate to Friends for the friends list
             ) : (
               <TouchableOpacity style={styles.listItem}>
                 <Image source={item.image} style={styles.largerCircularImage} />
@@ -92,14 +185,14 @@ const ProfileScreen = ({onLogout}) => {
         />
 
         {/* Groups List */}
-        <Text style={styles.sectionTitle}>Groups</Text>
+        <Text style={styles.sectionTitle}>Groups:</Text>
         <FlatList
           data={[...groups.slice(0, 7), { id: "more" }]} // Limit to 7 items and add "More" icon
           horizontal
           keyExtractor={(item) => item.id}
           renderItem={({ item }) =>
             item.id === "more" ? (
-              renderMoreIcon() // Render "More" icon at the end
+              renderMoreIcon("Groups") // Navigate to Groups for the groups list
             ) : (
               <TouchableOpacity style={styles.listItem}>
                 <Image source={item.image} style={styles.largerCircularImage} />
@@ -110,10 +203,9 @@ const ProfileScreen = ({onLogout}) => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
-
-        <Button title="temporary log out" onPress={onLogout}></Button>
+        <Button style={{}} title="Log Out" onPress={onLogout}></Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -124,10 +216,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
   },
+  backArrow: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    zIndex: 10,
+  },
   profileImageContainer: {
     alignItems: "center",
     position: "absolute",
-    top: 40,
+    top: 50,
     zIndex: 2,
   },
   profileImage: {
@@ -139,15 +237,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   backgroundContainer: {
-    height: screenHeight - 80,
-    marginTop: 80,
+    //flex: 1,
+    minHeight: screenHeight - 80,  // Set a minimum height
+    marginTop: 100,
     paddingTop: 60,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor: "#fff", // Updated background to pure white
+    backgroundColor: "#fff",
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingBottom: 80,
+    paddingBottom: 100,
   },
   userInfo: {
     alignItems: "center",
@@ -155,11 +253,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginBottom: 20,
   },
+  userNameContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   userName: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 5,
+    marginRight: 8,
+  },
+  editIcon: {
+    padding: 4,
   },
   userDetails: {
     fontSize: 15,
@@ -168,36 +273,38 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#4CAF50",
+    color: "#3fb59e",
     marginBottom: 10,
     alignSelf: "flex-start",
     marginLeft: 16,
   },
   listContainer: {
-    paddingHorizontal: 16,
-    alignItems: 'center' // Centers items in case of additional vertical alignment needs
+    alignItems: "center",
+    marginLeft: 16,
   },
   listItem: {
     alignItems: "center",
+    justifyContent: "center",
     marginRight: 15,
-    width: 80,
+    width: 90,
   },
   largerCircularImage: {
-    width: 80, // Increased size for friends and groups images
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     marginBottom: 5,
   },
   moreIconContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: 80, // Match size of friends and groups images
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: "#e0e0e0",
-    marginRight: 15, // Consistent spacing with list items
+    marginRight: 25,
+    marginBottom: 25,
   },
   listItemText: {
     fontSize: 14,
