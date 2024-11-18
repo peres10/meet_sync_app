@@ -1,10 +1,14 @@
 // AddButton.js
 import React from "react";
 import { Image, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const AddButton = ({ source, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.container}>
-    <Image source={source} style={styles.image} />
+    <Ionicons
+      name = {"add"} size={60} style= {styles.icons}
+    >
+    </Ionicons>
   </TouchableOpacity>
 );
 
@@ -26,6 +30,11 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "cover",
   },
+  icons:{
+    color:"#e9e9e9",
+    alignSelf: "center",
+    justifySelf: "center"
+  }
 });
 
 export default AddButton;
