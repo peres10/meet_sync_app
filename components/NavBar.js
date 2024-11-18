@@ -68,13 +68,69 @@ const MainScreens = (props) => {
                 source={require("../assets/plus.png")}
                 onPress={() => setIsHomeHiddenVisible(!isHomeHiddenVisible)}
               />
+              <CustomFooter />
             </>
           )}
         />
-        <Stack.Screen name="Friends" component={FriendsScreen} />
-        <Stack.Screen name="Groups" component={GroupsScreen} />
+ <Stack.Screen
+        name="Notifications"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <NotificationsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+      {/* Events Screen with AddButton */}
+        <Stack.Screen
+        name="Events"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <EventsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+      {/* Friends Screen with AddButton */}
+      <Stack.Screen
+        name="Friends"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <FriendsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+      {/* Groups Screen with AddButton */}
+      <Stack.Screen
+        name="Groups"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <GroupsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Home screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
       </Stack.Navigator>
-      <CustomFooter />
     </GradientBackground>
   );
 };

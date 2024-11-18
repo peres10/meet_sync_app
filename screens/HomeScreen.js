@@ -53,7 +53,7 @@ const HomeScreen = ({
               <Ionicons name="chatbubbles" size={40} color="#5D8F86" style={styles.hiddenIcon} />
           </TouchableOpacity>
             <Text style={styles.titleText}>New Group</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Events")}>
+            <TouchableOpacity onPress={() => navigation.navigate("NewEventScreen")}>
               <Ionicons name="location" size={40} color="#5D8F86" style={styles.hiddenIcon} />
             </TouchableOpacity>
             <Text style={styles.titleText}>New Event</Text>
