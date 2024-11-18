@@ -9,6 +9,8 @@ import CustomFooter from "./CustomFooter";
 import ProfileScreen from "../screens/ProfileScreen";
 import AddButton from "./AddButton";
 import EditProfileScreen from "../screens/EditProfile";
+import NewEventScreen from "../screens/NewEventScreen";
+import AddParticipantsScreen from "../screens/SelectParticipantsScreen";
 
 const Stack = createStackNavigator();
 
@@ -93,7 +95,7 @@ const NavBar = ({ onLogout }) => {
       <Stack.Screen
         name="Notifications"
         children={(props) => (
-          <GradientBackground style={{ flex: 1 }}>
+          <GradientBackground>
             <NotificationsScreen {...props} />
             <AddButton
               source={require("../assets/favicon.png")}
@@ -119,7 +121,6 @@ const NavBar = ({ onLogout }) => {
         )}
       />
 
-      {/* Groups Screen with AddButton */}
       <Stack.Screen
         name="Groups"
         children={(props) => (
@@ -132,6 +133,11 @@ const NavBar = ({ onLogout }) => {
             <CustomFooter />
           </GradientBackground>
         )}
+      />
+      <Stack.Screen name="NewEventScreen" component={NewEventScreen} />
+      <Stack.Screen
+        name="SelectParticipantsScreen"
+        component={AddParticipantsScreen}
       />
     </Stack.Navigator>
   );

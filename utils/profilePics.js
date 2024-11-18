@@ -17,4 +17,10 @@ export default {
   REINDEER: require("../assets/profile_pics/REINDEER.webp"),
   SEAL: require("../assets/profile_pics/SEAL.webp"),
   WALRUS: require("../assets/profile_pics/WALRUS.webp"),
+  RED_PANDA: require("../assets/profile_pics/RED_PANDA.webp"),
+  KOALA: require("../assets/profile_pics/KOALA.webp"),
+  SLOTH: require("../assets/profile_pics/SLOTH.webp"),
+  LLAMA: require("../assets/profile_pics/LLAMA.webp"),
+  OTTER: require("../assets/profile_pics/OTTER.webp"),
+  FLAMING: require("../assets/profile_pics/FLAMINGO.webp"),
 };
