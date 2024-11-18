@@ -50,10 +50,12 @@ const HomeScreen = ({
               <Image source={require("../assets/plus.png")} style={styles.closeButton} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
-              <Ionicons name="chatbubbles" size={40} color="#5D8F86" style={styles.hiddenIcon} />
+            <Image source={require("../assets/green_plus.png")} style={styles.newPage} />
+            <Ionicons name="chatbubbles" size={40} color="#5D8F86" style={styles.hiddenIcon} />
           </TouchableOpacity>
             <Text style={styles.titleText}>New Group</Text>
             <TouchableOpacity onPress={() => navigation.navigate("NewEventScreen")}>
+              <Image source={require("../assets/green_plus.png")} style={styles.newPage}/>
               <Ionicons name="location" size={40} color="#5D8F86" style={styles.hiddenIcon} />
             </TouchableOpacity>
             <Text style={styles.titleText}>New Event</Text>
@@ -95,7 +97,10 @@ const styles = StyleSheet.create({
     zIndex: 1000, 
   },
   hiddenIcon:{
-    color:"#5D8F86"
+    color:"#5D8F86",
+    height: 40,
+    marginTop: 10,
+    zIndex: -1, 
   },
   hiddenOverlay: {
     position: "absolute",
@@ -107,28 +112,30 @@ const styles = StyleSheet.create({
     zIndex: -1, 
   },
   hiddenContent: {
-    width: "22%",
-    height:"20%",
-    marginLeft:"73%",
-    marginTop:"155%",
+    width: "23%",
+    height: "25%",
+    marginLeft: "73%",
+    marginTop: "140%",
     backgroundColor: "#fff",
     borderRadius: 20,
     alignItems: "center",
-    elevation: 5, 
+    justifyContent: "space-evenly",
+    elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  hiddenImage: {
-    width: 50,
-    height: 50,
+  actionItem: {
+    alignItems: "center",
+    marginVertical: 10, // Space between items
   },
-  hiddenText: {
-    color: "#333",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
+  newPage: {
+    width: 25,
+    height: 25,
+    borderRadius: 30,
+    marginBottom: -25,
+    marginLeft: -10
   },
   closeButton: {
     color: "#E9E9E9",
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor:"#5D8F86",
     fontSize: 30,
-    marginTop: -20,
+    marginTop: -25,
     marginLeft: 70,
     transform: [{ rotate: "45deg" }]
   },
