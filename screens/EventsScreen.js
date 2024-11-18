@@ -4,8 +4,10 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity} from "react-native
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/Ionicons";
 import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
+import EventsListComponent from "../components/EventListComponent";
+import { useNavigation } from "@react-navigation/native";
 
-const FriendsScreen = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
+const EventsScreen = ({ navigation}) => {
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
@@ -18,7 +20,9 @@ const FriendsScreen = ({ navigation, isHiddenVisible, toggleHiddenElement }) => 
       </TouchableOpacity>
       <Text style={styles.titleText}>Events</Text>
       <TextInput style={styles.input} placeholder="Search Friends" />
-      <View style={styles.content_box}></View>
+      <View style={styles.content_box}>
+        <EventsListComponent />
+      </View>
     </View>
   );
 };
@@ -30,8 +34,7 @@ const styles = StyleSheet.create({
   },
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.90,
-    alignItems: "center",
+    height: screenHeight * 0.7,
     padding: 20,
     backgroundColor: "rgba(255, 255, 255, 0.40)",
     borderRadius: 67,
@@ -58,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FriendsScreen;
+export default EventsScreen;

@@ -1,9 +1,11 @@
 // components/EventsComponent.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, ScrollView } from "react-native";
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { eventStyles as styles } from "../styles/commonStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const EventsListComponent = () => {
+  const navigation = useNavigation();
   // Sample events data
   const [events, setEvents] = useState([
     { id: "3", title: "Networking Event", date: "2024-11-15" },
@@ -26,8 +28,11 @@ const EventsListComponent = () => {
 
   return (
     <View style={styles.container}>
+        
       <View style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.navigate("Events")}>
         <Text style={styles.headerText}>Upcoming Events</Text>
+      </TouchableOpacity>
       </View>
       <FlatList
         data={events}

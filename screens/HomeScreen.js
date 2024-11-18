@@ -5,6 +5,8 @@ import CalendarComponent from "../components/CalendarComponent";
 import EventsListComponent from "../components/EventListComponent";
 import profilePics from "../utils/profilePics";
 import { useUser } from "../context/UserProvider";
+import GradientBackground from "../components/GradientBackground";
+import { screenWidth } from "../styles/commonStyles";
 
 const HomeScreen = ({
   navigation,
@@ -15,56 +17,80 @@ const HomeScreen = ({
   const { user } = useUser();
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 20 }}>
-      {/* Top bar with profile and notifications icons */}
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <View style={styles.profileImageContainer}>
-            <Image
-              source={
-                user.avatarFile
-                  ? profilePics[user.avatarFile]
-                  : profilePics.BEAR
-              }
-              style={styles.profileImage}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
-          <Ionicons name="notifications" size={26} color="#fff" />
-        </TouchableOpacity>
+    <GradientBackground style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
+        {/* Top bar with profile and notifications icons */}
+        <View style={styles.topBar}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <View style={styles.profileImageContainer}>
+              <Image
+                source={
+                  user.avatarFile
+                    ? profilePics[user.avatarFile]
+                    : profilePics.BEAR
+                }
+                style={styles.profileImage}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
+            <Ionicons name="notifications" size={26} color="#fff" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Calendar Component */}
+        <CalendarComponent />
+
+        {/* Events List Component */}
+        <EventsListComponent />
+
+        {/* Hidden Element */}
       </View>
-
-      {/* Calendar Component */}
-      <CalendarComponent />
-
-      {/* Events List Component */}
-      <EventsListComponent />
-
-      {/* Hidden Element */}
       {isHiddenVisible && (
         <View style={styles.absoluteHiddenElement}>
           <View style={styles.hiddenOverlay} />
           <View style={styles.hiddenContent}>
-          <TouchableOpacity onPress={hideHiddenElement}>
-              <Image source={require("../assets/plus.png")} style={styles.closeButton} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
-            <Image source={require("../assets/green_plus.png")} style={styles.newPage} />
-            <Ionicons name="chatbubbles" size={40} color="#5D8F86" style={styles.hiddenIcon} />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={hideHiddenElement}>
+              <Image
+                source={require("../assets/plus.png")}
+                style={styles.closeButton}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
+              <Image
+                source={require("../assets/green_plus.png")}
+                style={styles.newPage}
+              />
+              <Ionicons
+                name="chatbubbles"
+                size={40}
+                color="#5D8F86"
+                style={styles.hiddenIcon}
+              />
+            </TouchableOpacity>
             <Text style={styles.titleText}>New Group</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("NewEventScreen")}>
-              <Image source={require("../assets/green_plus.png")} style={styles.newPage}/>
-              <Ionicons name="location" size={40} color="#5D8F86" style={styles.hiddenIcon} />
+            <TouchableOpacity
+              onPress={() => navigation.navigate("NewEventScreen")}
+            >
+              <Image
+                source={require("../assets/green_plus.png")}
+                style={styles.newPage}
+              />
+              <Ionicons
+                name="location"
+                size={40}
+                color="#5D8F86"
+                style={styles.hiddenIcon}
+              />
             </TouchableOpacity>
             <Text style={styles.titleText}>New Event</Text>
           </View>
         </View>
       )}
-    </View>
+    </GradientBackground>
   );
 };
+
 
 const styles = StyleSheet.create({
   topBar: {
@@ -94,7 +120,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 1000, 
+    zIndex: 500, 
   },
   hiddenIcon:{
     color:"#5D8F86",
@@ -125,10 +151,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+    zIndex:1,
   },
   actionItem: {
     alignItems: "center",
-    marginVertical: 10, // Space between items
+    marginVertical: 10,
   },
   newPage: {
     width: 25,
