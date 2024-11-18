@@ -8,6 +8,7 @@ import EventsListComponent from "../components/EventListComponent";
 import { useNavigation } from "@react-navigation/native";
 
 const EventsScreen = ({ navigation}) => {
+  
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
