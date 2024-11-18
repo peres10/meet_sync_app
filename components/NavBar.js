@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import GradientBackground from "./GradientBackground";
 import HomeScreen from "../screens/HomeScreen";
+import EventsScreen from "../screens/EventsScreen";
 import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
@@ -46,6 +47,21 @@ const NavBar = ({ navigation }) => {
         children={(props) => (
           <GradientBackground style={{ flex: 1 }}>
             <NotificationsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+      {/* Events Screen with AddButton */}
+        <Stack.Screen
+        name="Events"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <EventsScreen {...props} />
             <AddButton
               source={require("../assets/favicon.png")}
               onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen

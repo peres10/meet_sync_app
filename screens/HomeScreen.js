@@ -33,13 +33,17 @@ const HomeScreen = ({ navigation, isHiddenVisible, toggleHiddenElement, hideHidd
         <View style={styles.absoluteHiddenElement}>
           <View style={styles.hiddenOverlay} />
           <View style={styles.hiddenContent}>
-            <Image
-              source={require("../assets/favicon.png")} // Replace with your image path
-              style={styles.hiddenImage}
-            />
-            <TouchableOpacity onPress={hideHiddenElement}>
-              <Text style={styles.closeButton}>Close</Text>
+          <TouchableOpacity onPress={hideHiddenElement}>
+              <Image source={require("../assets/plus.png")} style={styles.closeButton} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
+              <Ionicons name="chatbubbles" size={40} color="#5D8F86" style={styles.hiddenIcon} />
+          </TouchableOpacity>
+            <Text style={styles.titleText}>New Group</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Events")}>
+              <Ionicons name="location" size={40} color="#5D8F86" style={styles.hiddenIcon} />
             </TouchableOpacity>
+            <Text style={styles.titleText}>New Event</Text>
           </View>
         </View>
       )}
@@ -70,40 +74,42 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   absoluteHiddenElement: {
-    position: "absolute", // Absolute positioning
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000, // Ensures it appears above everything
+    zIndex: 1000, 
+  },
+  hiddenIcon:{
+    color:"#5D8F86"
   },
   hiddenOverlay: {
-    position: "absolute", // Overlay that covers the background
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Semi-transparent black background to simulate blur
-    zIndex: -1, // Place behind the content
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    zIndex: -1, 
   },
   hiddenContent: {
-    width: 300,
-    padding: 20,
+    width: "22%",
+    height:"20%",
+    marginLeft:"73%",
+    marginTop:"155%",
     backgroundColor: "#fff",
-    borderRadius: 10,
+    borderRadius: 20,
     alignItems: "center",
-    elevation: 5, // Android shadow
-    shadowColor: "#000", // iOS shadow
-    shadowOffset: { width: 0, height: 2 },
+    elevation: 5, 
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
   hiddenImage: {
     width: 50,
     height: 50,
-    marginBottom: 10,
   },
   hiddenText: {
     color: "#333",
@@ -112,9 +118,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   closeButton: {
-    color: "#007BFF",
-    fontSize: 16,
-    marginTop: 10,
+    color: "#E9E9E9",
+    width: 35,
+    height: 35,
+    borderRadius: 30,
+    backgroundColor:"#5D8F86",
+    fontSize: 30,
+    marginTop: -20,
+    marginLeft: 70,
+    transform: [{ rotate: "45deg" }]
   },
 });
 
