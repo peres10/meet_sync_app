@@ -122,7 +122,7 @@ const LoginScreen = ({ navigation, onLogin }) => {
 const styles = StyleSheet.create({
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.55,
+    height: "60%",
     alignItems: "center",
     padding: 20,
     backgroundColor: "rgba(255, 255, 255, 0.40)",
@@ -163,11 +163,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "40%",
     borderRadius: 25,
     alignItems: "center",
-    marginTop: 50,
+    marginTop: "6%",
   },
   linkContainer: {
-    position: "absolute",
-    bottom: 40, // Adjust this to control the distance from the bottom
+    marginTop: "8%",
     alignSelf: "center",
     alignItems: "center",
   },
