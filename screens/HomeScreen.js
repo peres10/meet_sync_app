@@ -15,7 +15,7 @@ const HomeScreen = ({
   const { user } = useUser();
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 20 }}>
+    <View style={{ flex: 1, paddingHorizontal: 20, backgroundColor: "#3fb59e" }}>
       {/* Top bar with profile and notifications icons */}
       <View style={styles.topBar}>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
