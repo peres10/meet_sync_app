@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
+    paddingHorizontal:"5%",
     width: "100%",
   },
   saveButtonText: {
