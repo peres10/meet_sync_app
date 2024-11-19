@@ -14,6 +14,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import GradientBackground from "../components/GradientBackground";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -88,6 +89,7 @@ const NewEventScreen = () => {
   };
 
   return (
+    <GradientBackground style={{ flex: 1 }}>
     <View style={styles.container}>
       {/* Back Arrow */}
       <TouchableOpacity style={styles.backArrow} onPress={handleBackPress}>
@@ -238,6 +240,7 @@ const NewEventScreen = () => {
         />
       )}
     </View>
+    </GradientBackground >
   );
 };
 
