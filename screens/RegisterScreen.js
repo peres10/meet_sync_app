@@ -17,10 +17,8 @@ import {
 } from "../styles/commonStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { doc, setDoc } from "firebase/firestore";
-import { db, auth } from "../firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "../context/UserProvider";
+import { insertNewUserInDb, registerUser } from "../services/auth";
 
 const RegisterScreen = ({ navigation, onLogin }) => {
   const [username, setUsername] = useState("");
@@ -33,22 +31,9 @@ const RegisterScreen = ({ navigation, onLogin }) => {
 
   const handleRegister = async () => {
     try {
-      const userCreds = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const user = await registerUser(email, password);
 
-      const user = userCreds.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        username: username,
-        email: email,
-        phoneNumber: phoneNumber,
-        createdAt: new Date(),
-        uid: user.uid,
-        avatarFile: "BEAR",
-      });
+      await insertNewUserInDb(username, email, phoneNumber, user)
 
       setUser({
         uid: user.uid,

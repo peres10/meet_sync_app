@@ -18,9 +18,7 @@ import profilePics from "../utils/profilePics"; // Import profile pictures
 import { useNavigation } from "@react-navigation/native";
 
 import { useUser } from "../context/UserProvider";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { db, auth } from "../firebaseConfig";
-import { updateEmail, updatePassword, verifyBeforeUpdateEmail } from "firebase/auth";
+import { updateUserData, updateUserPassword } from "../services/auth";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -61,8 +59,6 @@ const EditProfileScreen = () => {
 
   const updateProfile = async () => {
     try {
-      const userDocRef = doc(db, "users", user.uid);
-     
       const updatedData = {
         uid: user.uid,
         username,
@@ -71,11 +67,9 @@ const EditProfileScreen = () => {
         avatarFile: profileImageName,
       };
 
-      if (password) {
-        await updatePassword(auth.currentUser, password);
-      }
+      updateUserPassword(password);
 
-      await updateDoc(userDocRef, updatedData);
+      await updateUserData(user, updatedData);
 
       setUser(updatedData);
       Alert.alert("Success", "Profile information updated!", [
@@ -272,7 +266,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
-    paddingHorizontal:"5%",
+    paddingHorizontal: "5%",
     width: "100%",
   },
   saveButtonText: {
