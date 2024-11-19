@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,35 +7,47 @@ import {
   Image,
   StyleSheet,
   Dimensions,
-  ScrollView,
   Alert,
+  ScrollView,
+  Modal,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import GradientBackground from "../components/GradientBackground";
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const NewEventScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [eventName, setEventName] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [date, setDate] = useState(new Date());
+
+  // Initialize state, fallback to current values if coming from another screen
+  const [eventName, setEventName] = useState(route.params?.eventName || "");
+  const [description, setDescription] = useState(
+    route.params?.description || ""
+  );
+  const [location, setLocation] = useState(route.params?.location || "");
+  const [date, setDate] = useState(route.params?.date || new Date());
+  const [time, setTime] = useState(route.params?.time || new Date());
+  const [participants, setParticipants] = useState(
+    route.params?.participants || []
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [pickerMode, setPickerMode] = useState("date"); // "date" or "time"
+  const [showModal, setShowModal] = useState(false); // State for confirmation modal
 
-  const [participants, setParticipants] = useState([]); // Holds the selected participants
-
-  // Update participants if returned from AddParticipantsScreen
-  React.useEffect(() => {
+  // Handle participants update when returning from SelectParticipantsScreen
+  useEffect(() => {
     if (route.params?.selectedParticipants) {
       setParticipants(route.params.selectedParticipants);
     }
   }, [route.params?.selectedParticipants]);
 
   const handleRemoveParticipant = (id) => {
-    setParticipants(participants.filter((participant) => participant.id !== id));
+    setParticipants(
+      participants.filter((participant) => participant.id !== id)
+    );
   };
 
   const handleSaveEvent = () => {
@@ -44,107 +56,191 @@ const NewEventScreen = () => {
       return;
     }
     Alert.alert("Success", "Event created successfully!");
-    navigation.navigate("EventsScreen");
+    navigation.navigate("Main");
   };
 
-  const showDatePickerHandler = () => {
+  const showDatePickerHandler = (mode) => {
     setShowDatePicker(true);
+    setPickerMode(mode);
   };
 
-  const onDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onDateChange = (event, selectedValue) => {
     setShowDatePicker(false);
-    setDate(currentDate);
+    if (selectedValue) {
+      if (pickerMode === "date") {
+        setDate(selectedValue);
+      } else {
+        setTime(selectedValue);
+      }
+    }
+  };
+
+  const handleBackPress = () => {
+    setShowModal(true); // Show the confirmation modal
+  };
+
+  const handleCancel = () => {
+    setShowModal(false); // Close the modal
+  };
+
+  const handleConfirm = () => {
+    setShowModal(false);
+    navigation.navigate("Main"); // Navigate to HomeScreen
   };
 
   return (
+    <GradientBackground style={{ flex: 1 }}>
     <View style={styles.container}>
       {/* Back Arrow */}
-      <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backArrow} onPress={handleBackPress}>
         <Ionicons name="arrow-back" size={30} color="#333" />
       </TouchableOpacity>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-        <Text style={styles.header}>Create New Event</Text>
+      <Text style={styles.header}>Create New Event</Text>
 
-        {/* Event Name */}
-        <TextInput
-          style={styles.input}
-          placeholder="Event Name"
-          value={eventName}
-          onChangeText={setEventName}
-        />
-
-        {/* Description */}
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-        />
-
-        {/* Location */}
-        <TextInput
-          style={styles.input}
-          placeholder="Location"
-          value={location}
-          onChangeText={setLocation}
-        />
-
-        {/* Date and Time Picker */}
-        <TouchableOpacity onPress={showDatePickerHandler} style={styles.datePicker}>
-          <Ionicons name="calendar" size={24} color="#333" />
-          <Text style={styles.dateText}>
-            {date.toLocaleDateString()} {date.toLocaleTimeString()}
-          </Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="datetime"
-            display="default"
-            onChange={onDateChange}
-          />
-        )}
-
-        {/* Participants Box */}
-        <View style={styles.participantsBox}>
-          {participants.length === 0 ? (
-            <Text style={styles.emptyText}>No participants selected</Text>
-          ) : (
-            <View style={styles.participantsContainer}>
-              {participants.map((participant) => (
-                <View key={participant.id} style={styles.participantItem}>
-                  <Image source={participant.image} style={styles.participantImage} />
-                  <TouchableOpacity
-                    style={styles.trashIcon}
-                    onPress={() => handleRemoveParticipant(participant.id)}
-                  >
-                    <FontAwesome name="trash" size={16} color="#f00" />
-                  </TouchableOpacity>
-                </View>
-              ))}
+      {/* Confirmation Modal */}
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="slide"
+        onRequestClose={handleCancel}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Are you sure you want to cancel creating this event?
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={handleCancel}
+              >
+                <Text style={styles.modalButtonText}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalConfirmButton]}
+                onPress={handleConfirm}
+              >
+                <Text style={styles.modalButtonText}>Yes</Text>
+              </TouchableOpacity>
             </View>
-          )}
-
-          {/* Add Participants Button */}
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() =>
-              navigation.navigate("SelectParticipantsScreen", { currentParticipants: participants })
-            }
-          >
-            <Ionicons name="add" size={24} color="#fff" />
-          </TouchableOpacity>
+          </View>
         </View>
+      </Modal>
 
-        {/* Save Button */}
-        <TouchableOpacity style={styles.saveButton} onPress={handleSaveEvent}>
-          <Text style={styles.saveButtonText}>Save Event</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      {/* Rounded Container */}
+      <View style={styles.roundedContainer}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Event Name */}
+          <TextInput
+            style={styles.input}
+            placeholder="Event Name"
+            value={eventName}
+            onChangeText={setEventName}
+          />
+
+          {/* Description */}
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            placeholder="Description"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+          />
+
+          {/* Location */}
+          <TextInput
+            style={styles.input}
+            placeholder="Location"
+            value={location}
+            onChangeText={setLocation}
+          />
+
+          {/* Date and Time Pickers in a Row */}
+          <View style={styles.dateTimeRow}>
+            <TouchableOpacity
+              style={[styles.datePicker, styles.halfWidth]}
+              onPress={() => showDatePickerHandler("date")}
+            >
+              <Ionicons name="calendar" size={24} color="#333" />
+              <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.datePicker,
+                styles.halfWidth,
+                styles.timePickerMargin,
+              ]}
+              onPress={() => showDatePickerHandler("time")}
+            >
+              <Ionicons name="time" size={24} color="#333" />
+              <Text style={styles.dateText}>{time.toLocaleTimeString()}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Participants Box */}
+          <View style={styles.participantsBox}>
+            {participants.length === 0 ? (
+              <Text style={styles.emptyText}>No participants selected</Text>
+            ) : (
+              <View style={styles.participantsContainer}>
+                {participants.map((participant) => (
+                  <View key={participant.id} style={styles.participantItem}>
+                    <Image
+                      source={participant.image}
+                      style={styles.participantImage}
+                    />
+                    <TouchableOpacity
+                      style={styles.trashIcon}
+                      onPress={() => handleRemoveParticipant(participant.id)}
+                    >
+                      <FontAwesome name="trash" size={16} color="#f00" />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {/* Add Participants Button */}
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() =>
+                navigation.navigate("SelectParticipantsScreen", {
+                  currentParticipants: participants,
+                  eventName,
+                  description,
+                  location,
+                  date,
+                  time,
+                })
+              }
+            >
+              <Ionicons name="add" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Save Button */}
+          <TouchableOpacity style={styles.saveButton} onPress={handleSaveEvent}>
+            <Text style={styles.saveButtonText}>Save Event</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      {/* DateTimePicker */}
+      {showDatePicker && (
+        <DateTimePicker
+          value={pickerMode === "date" ? date : time}
+          mode={pickerMode}
+          display="default"
+          onChange={onDateChange}
+        />
+      )}
     </View>
+    </GradientBackground >
   );
 };
 
@@ -152,6 +248,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    alignItems: "center",
   },
   backArrow: {
     position: "absolute",
@@ -159,19 +256,72 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 10,
   },
-  scrollContainer: {
-    alignItems: "center",
-    paddingTop: 100,
-    paddingBottom: 20,
-  },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginTop: 50,
+    marginBottom: 10,
     color: "#333",
   },
+  roundedContainer: {
+    width: screenWidth,
+    flex: 1,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    marginTop: 25,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  modalButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    backgroundColor: "#ddd",
+  },
+  modalConfirmButton: {
+    backgroundColor: "#3fb59e",
+  },
+  modalButtonText: {
+    color: "#333",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  scrollContainer: {
+    alignItems: "center",
+    paddingBottom: 20,
+  },
   input: {
-    width: screenWidth * 0.9,
+    width: "100%",
     padding: 12,
     marginVertical: 10,
     borderColor: "#ddd",
@@ -183,11 +333,15 @@ const styles = StyleSheet.create({
     height: 100,
     textAlignVertical: "top",
   },
+  dateTimeRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
   datePicker: {
     flexDirection: "row",
     alignItems: "center",
     padding: 12,
-    width: screenWidth * 0.9,
     borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 8,
@@ -199,8 +353,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  halfWidth: {
+    width: "48%",
+  },
+  timePickerMargin: {
+    marginLeft: 10,
+  },
   participantsBox: {
-    width: screenWidth * 0.9,
+    width: "100%",
     minHeight: 150,
     borderWidth: 1,
     borderColor: "#ddd",
@@ -216,7 +376,6 @@ const styles = StyleSheet.create({
   },
   participantsContainer: {
     flexDirection: "row",
-    flexWrap: "wrap",
   },
   participantItem: {
     position: "relative",
@@ -243,16 +402,16 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#3fb59e",
     justifyContent: "center",
     alignItems: "center",
   },
   saveButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#3fb59e",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
-    width: screenWidth * 0.9,
+    width: "100%",
     marginTop: 20,
   },
   saveButtonText: {

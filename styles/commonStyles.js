@@ -127,12 +127,13 @@ const calendarStyles = StyleSheet.create({
 const eventStyles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    borderRadius: 12,
+    borderRadius: 20,
     elevation: 4,
     overflow: "hidden",
     marginVertical: 20,
     padding: 10,
     flex: 1,
+    width:"100%"
   },
   header: {
     alignItems: "center",
