@@ -64,7 +64,7 @@ const EventsListComponent = () => {
                   eventDetails: item.details,
                   eventLocation: item.location,
                   eventId: item.id,
-                  fetchEvents: fetchEvents
+                  eventTime: item.time,
                 })
               }
             >

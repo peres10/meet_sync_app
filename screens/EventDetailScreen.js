@@ -28,7 +28,7 @@ const EventDetailScreen = ({ route, navigation }) => {
 
   const allParticipants = [...friends, ...groups];
 
-  const { eventTitle, eventDate, eventDetails, eventId, eventLocation } = route.params;
+  const { eventTitle, eventDate, eventDetails, eventId, eventLocation, eventTime } = route.params;
 
   // Calculate days left until the event
   const getDaysLeft = (eventDate) => {
@@ -105,6 +105,9 @@ const EventDetailScreen = ({ route, navigation }) => {
             month: "short",
             day: "numeric",
             year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
           })}
         </Text>
         <Text style={styles.infoText}>
