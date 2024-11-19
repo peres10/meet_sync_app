@@ -4,6 +4,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-nativ
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/Ionicons";
 import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
+import GroupsListComponent from "../components/GroupListComponent";
 
 const GroupsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
   return (
@@ -18,7 +19,9 @@ const GroupsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => 
       </TouchableOpacity>
       <Text style={styles.titleText}>Groups</Text>
       <TextInput style={styles.input} placeholder="Search Groups" />
-      <View style={styles.content_box}></View>
+      <View style={styles.content_box}>
+        <GroupsListComponent />
+      </View>
     </View>
   );
 };

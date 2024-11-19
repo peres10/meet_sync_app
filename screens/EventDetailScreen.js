@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.9,
     height: screenHeight * 0.45,
     marginTop: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: "rgba(255, 255, 255, 1)",
     borderRadius: 20,
     alignItems: "center",
     padding: 15,

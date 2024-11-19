@@ -56,7 +56,8 @@ const HomeScreen = ({
                 style={styles.closeButton}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Groups")}>
+            <TouchableOpacity
+             onPress={() => navigation.navigate("NewGroupScreen")}>
               <Image
                 source={require("../assets/green_plus.png")}
                 style={styles.newPage}

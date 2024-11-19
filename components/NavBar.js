@@ -12,6 +12,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import AddButton from "./AddButton";
 import EditProfileScreen from "../screens/EditProfile";
 import NewEventScreen from "../screens/NewEventScreen";
+import NewGroupScreen from "../screens/NewGroupScreen"
 import AddParticipantsScreen from "../screens/SelectParticipantsScreen";
 
 const Stack = createStackNavigator();
@@ -139,7 +140,7 @@ const MainScreens = (props) => {
             <GroupsScreen {...props} />
             <AddButton
                 name={"add"}
-              onPress={() => props.navigation.navigate("Home")}
+                onPress={() => props.navigation.navigate("NewGroupScreen")}
             />
             <CustomFooter />
           </GradientBackground>
@@ -224,6 +225,7 @@ const NavBar = ({ onLogout }) => {
         )}
       />
       <Stack.Screen name="NewEventScreen" component={NewEventScreen} />
+      <Stack.Screen name="NewGroupScreen" component={NewGroupScreen} />
       <Stack.Screen
         name="SelectParticipantsScreen"
         component={AddParticipantsScreen}
