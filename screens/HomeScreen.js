@@ -17,6 +17,26 @@ const HomeScreen = ({
   const { user } = useUser();
 
   return (
+<<<<<<< HEAD
+    <View style={{ flex: 1, paddingHorizontal: 20, backgroundColor: "#3fb59e" }}>
+      {/* Top bar with profile and notifications icons */}
+      <View style={styles.topBar}>
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <View style={styles.profileImageContainer}>
+            <Image
+              source={
+                user.avatarFile
+                  ? profilePics[user.avatarFile]
+                  : profilePics.BEAR
+              }
+              style={styles.profileImage}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
+          <Ionicons name="notifications" size={26} color="#fff" />
+        </TouchableOpacity>
+=======
     <GradientBackground style={{ flex: 1 }}>
       <View style={{ flex: 1, paddingHorizontal: 20 }}>
         {/* Top bar with profile and notifications icons */}
@@ -45,6 +65,7 @@ const HomeScreen = ({
         <EventsListComponent />
 
         {/* Hidden Element */}
+>>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
       </View>
       {isHiddenVisible && (
         <View style={styles.absoluteHiddenElement}>

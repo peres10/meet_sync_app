@@ -86,6 +86,79 @@ const MainScreens = (props) => {
             </>
           )}
         />
+<<<<<<< HEAD
+        <Stack.Screen
+          name="Notifications"
+          children={(props) => (
+            <GradientBackground style={{ flex: 1 }}>
+              <NotificationsScreen {...props} />
+              <AddButton
+                source={require("../assets/favicon.png")}
+                onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+              />
+              <CustomFooter />
+            </GradientBackground>
+          )}
+        />
+
+        {/* Events Screen with AddButton */}
+        <Stack.Screen
+          name="Events"
+          children={(props) => (
+            <GradientBackground style={{ flex: 1 }}>
+              <EventsScreen {...props} />
+              <AddButton
+                source={require("../assets/favicon.png")}
+                onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+              />
+              <CustomFooter />
+            </GradientBackground>
+          )}
+        />
+
+        {/* Friends Screen with AddButton */}
+        <Stack.Screen
+          name="Friends"
+          children={(props) => (
+            <GradientBackground style={{ flex: 1 }}>
+              <FriendsScreen {...props} />
+              <AddButton
+                source={require("../assets/favicon.png")}
+                onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+              />
+              <CustomFooter />
+            </GradientBackground>
+          )}
+        />
+
+        {/* Groups Screen with AddButton */}
+        <Stack.Screen
+          name="Groups"
+          children={(props) => (
+            <GradientBackground style={{ flex: 1 }}>
+              <GroupsScreen {...props} />
+              <AddButton
+                source={require("../assets/favicon.png")}
+                onPress={() => props.navigation.navigate("Home")} // Navigate to Home screen
+              />
+              <CustomFooter />
+            </GradientBackground>
+          )}
+        />
+        <Stack.Screen
+          name="CreateEvent"
+          children={(props) => (
+            <GradientBackground style={{ flex: 1 }}>
+              <GroupsScreen {...props} />
+              <AddButton
+                source={require("../assets/favicon.png")}
+                onPress={() => props.navigation.navigate("Home")} // Navigate to Home screen
+              />
+              <CustomFooter />
+            </GradientBackground>
+          )}
+        />
+=======
 <Stack.Screen
         name="Notifications"
         children={(props) => (
@@ -145,6 +218,7 @@ const MainScreens = (props) => {
           </GradientBackground>
         )}
       />
+>>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
       </Stack.Navigator>
     </GradientBackground>
   );
@@ -180,6 +254,24 @@ const NavBar = ({ onLogout }) => {
         )}
       />
 
+<<<<<<< HEAD
+      {/* Events Screen with AddButton */}
+      <Stack.Screen
+        name="Events"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <EventsScreen {...props} />
+            <AddButton
+              source={require("../assets/favicon.png")}
+              onPress={() => props.navigation.navigate("Home")} // Navigate to Notifications screen
+            />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+
+=======
+>>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
       {/* Friends Screen with AddButton */}
       <Stack.Screen
         name="Friends"
