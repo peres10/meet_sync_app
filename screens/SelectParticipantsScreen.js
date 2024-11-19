@@ -138,16 +138,11 @@ const SelectParticipantsScreen = () => {
     <GradientBackground style={{ flex: 1 }}>
     <View style={styles.container}>
       {/* Back Arrow */}
-<<<<<<< HEAD
       <TouchableOpacity
         style={styles.backArrow}
         onPress={handleBack}
       >
         <Ionicons name="arrow-back" size={30} color="#333" />
-=======
-      <TouchableOpacity style={styles.backArrow} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={35} color="#e9e9e9" />
->>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
       </TouchableOpacity>
 
       {/* Header */}
@@ -166,7 +161,6 @@ const SelectParticipantsScreen = () => {
           />
         </View>
 
-<<<<<<< HEAD
         {/* Toggle Bar with Slider */}
         <View style={styles.toggleContainer}>
           <Animated.View
@@ -220,24 +214,6 @@ const SelectParticipantsScreen = () => {
                     />
                   </View>
                 )}
-=======
-      {/* Participant List */}
-      <FlatList
-        data={filteredParticipants}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-        contentContainerStyle={styles.listContainer}
-        style={styles.participantContainer} // Added style prop
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.participants}
-            onPress={() => toggleSelection(item.id)}
-          >
-            <Image source={item.image} style={styles.participantImage} />
-            {selectedParticipants.some((participant) => participant.id === item.id) && (
-              <View style={styles.overlay}>
-                <Ionicons name="checkmark-circle" size={40} color="#4CAF50" />
->>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
               </View>
               <Text style={styles.participantName}>{item.name}</Text>
             </TouchableOpacity>
@@ -257,30 +233,17 @@ const SelectParticipantsScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop:"10%",
-    width: "100%",
     flex: 1,
-<<<<<<< HEAD
     backgroundColor: "#3fb59e",
-=======
-  },
-  participantContainer:{
-    width: screenWidth,
-    height: 10,
-    alignContent: "center",
-    backgroundColor: "#f5f5f5",
-    borderRadius:30,
-    marginTop:"5%"
->>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
   },
   backArrow: {
     position: "absolute",
-    top: "3%",
+    top: 50,
     left: 20,
     zIndex: 10,
   },
   header: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 50,
@@ -302,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f5f5f5",
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 8,
     marginHorizontal: 16,
     borderWidth: 1,
     borderColor: "#ddd",
@@ -310,7 +273,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     marginLeft: 10,
-    fontSize: 20,
     flex: 1,
   },
   toggleContainer: {
@@ -344,16 +306,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     justifyContent: "space-between",
   },
-  participants: {
+  participantContainer: {
     alignItems: "center",
-<<<<<<< HEAD
     margin: 5,
     width: screenWidth / 3 - 20,
-=======
-    justifyContent: "center",
-    margin: 10,
-    width: screenWidth / 4,
->>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
   },
   participantImage: {
     width: 80,
@@ -381,16 +337,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#3fb59e",
     paddingVertical: 12,
     borderRadius: 8,
-<<<<<<< HEAD
     alignItems: "center",
     marginTop: 20,
     width: "100%",
     marginBottom: 50,
-=======
-    marginHorizontal: 70,
-    marginBottom: "8%",
-    marginTop: "10%",
->>>>>>> 3c1a3657ae4c43eb438b166de997b242ba0b2b87
   },
   saveButtonText: {
     color: "#fff",

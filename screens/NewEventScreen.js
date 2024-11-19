@@ -23,11 +23,15 @@ const NewEventScreen = () => {
 
   // Initialize state, fallback to current values if coming from another screen
   const [eventName, setEventName] = useState(route.params?.eventName || "");
-  const [description, setDescription] = useState(route.params?.description || "");
+  const [description, setDescription] = useState(
+    route.params?.description || ""
+  );
   const [location, setLocation] = useState(route.params?.location || "");
   const [date, setDate] = useState(route.params?.date || new Date());
   const [time, setTime] = useState(route.params?.time || new Date());
-  const [participants, setParticipants] = useState(route.params?.participants || []);
+  const [participants, setParticipants] = useState(
+    route.params?.participants || []
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [pickerMode, setPickerMode] = useState("date"); // "date" or "time"
   const [showModal, setShowModal] = useState(false); // State for confirmation modal
@@ -269,7 +273,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
-    marginTop: 20,
+    marginTop: 25,
   },
   modalContainer: {
     flex: 1,
