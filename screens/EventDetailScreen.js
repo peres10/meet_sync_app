@@ -14,10 +14,12 @@ import {
   screenHeight,
   screenWidth,
 } from "../styles/commonStyles";
-import { db } from "../firebaseConfig";
 import { deleteEvent } from "../services/events";
+import { useUser } from "../context/UserProvider";
 
 const EventDetailScreen = ({ route, navigation }) => {
+  const { user } = useUser();
+
   const friends = [
     {
       id: "1",
@@ -63,8 +65,9 @@ const EventDetailScreen = ({ route, navigation }) => {
     eventId,
     eventLocation,
     eventTime,
+    eventCreatorId
   } = route.params;
-
+  
   // Calculate days left until the event
   const getDaysLeft = (eventDate) => {
     const today = new Date();
@@ -74,26 +77,11 @@ const EventDetailScreen = ({ route, navigation }) => {
     return daysLeft >= 0 ? daysLeft : 0;
   };
 
-  const fetchEvents = async () => {
-    try {
-      const eventsCollection = collection(db, "events"); // Replace "events" with your Firestore collection name
-      const snapshot = await getDocs(eventsCollection);
-      const eventsList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setEvents(eventsList);
-    } catch (error) {
-      console.error("Error fetching events: ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const daysLeft = getDaysLeft(eventDate);
 
+
   // Function to handle delete action
-  const handleDelete = async () => {
+  const handleDeleteOrLeave = async () => {
     Alert.alert(
       "Delete Event",
       `Are you sure you want to delete the event: ${eventTitle}?`,
@@ -172,8 +160,8 @@ const EventDetailScreen = ({ route, navigation }) => {
             showsVerticalScrollIndicator={false}
           />
         </View>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.deleteButtonText}>Delete</Text>
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteOrLeave}>
+          <Text style={styles.deleteButtonText}>{user.uid == eventCreatorId ? "Delete" : "Leave"}</Text>
         </TouchableOpacity>
       </View>
     </View>

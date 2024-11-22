@@ -59,7 +59,6 @@ const NewEventScreen = () => {
 
     try {
       // Prepare event data to be saved
-      console.log(eventName);
       const eventData = {
         title: eventName,
         details: description,
@@ -115,6 +114,8 @@ const NewEventScreen = () => {
     setShowModal(false);
     navigation.navigate("Main"); // Navigate to HomeScreen
   };
+
+  const todayDate = new Date();
 
   return (
     <GradientBackground style={{ flex: 1 }}>
@@ -210,6 +211,17 @@ const NewEventScreen = () => {
               </TouchableOpacity>
             </View>
 
+            {/* DateTimePicker */}
+        {showDatePicker && (
+          <DateTimePicker
+            value={pickerMode === "date" ? date : time}
+            mode={pickerMode}
+            display="default"
+            onChange={onDateChange}
+            minimumDate={pickerMode === "date" ? todayDate : null}
+          />
+        )}
+
             {/* Participants Box */}
             <View style={styles.participantsBox}>
               {participants.length === 0 ? (
@@ -261,15 +273,6 @@ const NewEventScreen = () => {
           </ScrollView>
         </View>
 
-        {/* DateTimePicker */}
-        {showDatePicker && (
-          <DateTimePicker
-            value={pickerMode === "date" ? date : time}
-            mode={pickerMode}
-            display="default"
-            onChange={onDateChange}
-          />
-        )}
       </View>
     </GradientBackground>
   );
