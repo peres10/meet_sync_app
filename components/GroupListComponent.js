@@ -16,17 +16,19 @@ const GroupsListComponent = () => {
   const [loading, setLoading] = useState(true);
 
   // Function to fetch groups from Firestore
-  const fetchGroups = async () => {
-    try {
-      const groupsCollection = collection(db, "groups"); // Replace "groups" with your Firestore collection name
-      const snapshot = await getDocs(groupsCollection);
-      const groupsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      console.error("Error fetching groups: ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchGroups = async () => {
+  try {
+    const groupsCollection = collection(db, "groups"); // Replace "groups" with your Firestore collection name
+    const snapshot = await getDocs(groupsCollection);
+    const groupsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    console.log("Fetched Groups: ", groupsList);
+    setGroups(groupsList); // Save fetched groups to state
+  } catch (error) {
+    console.error("Error fetching groups: ", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // UseEffect to fetch groups on component mount
   useEffect(() => {

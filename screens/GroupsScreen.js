@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.90,
+    height: screenHeight * 0.70,
     alignItems: "center",
     padding: 20,
     backgroundColor: "rgba(255, 255, 255, 0.40)",
