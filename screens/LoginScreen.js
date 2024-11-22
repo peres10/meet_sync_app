@@ -18,10 +18,8 @@ import {
   screenWidth,
 } from "../styles/commonStyles";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebaseConfig";
 import { useUser } from "../context/UserProvider";
-import { getDoc, doc } from "firebase/firestore";
+import { getUserFromDb, signUser } from "../services/auth";
 
 const LoginScreen = ({ navigation, onLogin }) => {
   const [email, setEmail] = useState(""); // For storing email input
@@ -31,11 +29,9 @@ const LoginScreen = ({ navigation, onLogin }) => {
 
   const handleLogin = async () => {
     try {
-      const userCreds = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCreds.user;
+      const user = await signUser(email, password);
 
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
+      const userDoc = await getUserFromDb(user);
 
       if (userDoc.exists()) {
         setUser({

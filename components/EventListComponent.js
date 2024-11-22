@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { eventStyles as styles } from "../styles/commonStyles";
-import { useNavigation } from "@react-navigation/native";
-import { db } from "../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { getAllEvents } from "../services/events";
 
 const EventsListComponent = () => {
   const navigation = useNavigation();
@@ -14,10 +20,10 @@ const EventsListComponent = () => {
 
   // Function to fetch events from Firestore
   const fetchEvents = async () => {
+    // TODO this should be get events user is participating but for now I'll just put it like this
     try {
-      const eventsCollection = collection(db, "events"); // Replace "events" with your Firestore collection name
-      const snapshot = await getDocs(eventsCollection);
-      const eventsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const eventsList = await getAllEvents();
+
       setEvents(eventsList);
     } catch (error) {
       console.error("Error fetching events: ", error);
@@ -35,10 +41,12 @@ const EventsListComponent = () => {
     return daysLeft >= 0 ? daysLeft : 0;
   };
 
-  // UseEffect to fetch events on component mount
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  // Fecthes the events everytime the screen is on focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchEvents();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -49,7 +57,11 @@ const EventsListComponent = () => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" style={styles.loadingIndicator} />
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={styles.loadingIndicator}
+        />
       ) : (
         <FlatList
           data={events}
@@ -79,7 +91,9 @@ const EventsListComponent = () => {
                 </Text>
               </View>
               <Text style={styles.daysLeft}>
-                in <Text style={styles.daysNumber}>{getDaysLeft(item.date)}</Text> days
+                in{" "}
+                <Text style={styles.daysNumber}>{getDaysLeft(item.date)}</Text>{" "}
+                days
               </Text>
             </TouchableOpacity>
           )}

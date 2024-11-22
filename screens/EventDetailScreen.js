@@ -9,26 +9,61 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
+import {
+  commonStyles,
+  screenHeight,
+  screenWidth,
+} from "../styles/commonStyles";
 import { db } from "../firebaseConfig";
-import { doc, deleteDoc } from "firebase/firestore";
+import { deleteEvent } from "../services/events";
 
 const EventDetailScreen = ({ route, navigation }) => {
   const friends = [
-    { id: "1", name: "John Doe", image: require("../assets/profile_pics/BEAR.webp") },
-    { id: "2", name: "Jane Smith", image: require("../assets/profile_pics/OWL.webp") },
-    { id: "3", name: "Alice", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "4", name: "Bob", image: require("../assets/profile_pics/SEAL.webp") },
+    {
+      id: "1",
+      name: "John Doe",
+      image: require("../assets/profile_pics/BEAR.webp"),
+    },
+    {
+      id: "2",
+      name: "Jane Smith",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
+    {
+      id: "3",
+      name: "Alice",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "4",
+      name: "Bob",
+      image: require("../assets/profile_pics/SEAL.webp"),
+    },
   ];
 
   const groups = [
-    { id: "5", name: "React Devs", image: require("../assets/profile_pics/RABBIT.webp") },
-    { id: "6", name: "Music Lovers", image: require("../assets/profile_pics/OWL.webp") },
+    {
+      id: "5",
+      name: "React Devs",
+      image: require("../assets/profile_pics/RABBIT.webp"),
+    },
+    {
+      id: "6",
+      name: "Music Lovers",
+      image: require("../assets/profile_pics/OWL.webp"),
+    },
   ];
 
   const allParticipants = [...friends, ...groups];
 
-  const { eventTitle, eventDate, eventDetails, eventId, eventLocation, eventTime } = route.params;
+  const {
+    eventTitle,
+    eventDate,
+    eventDetails,
+    eventId,
+    eventLocation,
+    eventTime,
+  } = route.params;
 
   // Calculate days left until the event
   const getDaysLeft = (eventDate) => {
@@ -43,7 +78,10 @@ const EventDetailScreen = ({ route, navigation }) => {
     try {
       const eventsCollection = collection(db, "events"); // Replace "events" with your Firestore collection name
       const snapshot = await getDocs(eventsCollection);
-      const eventsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const eventsList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       setEvents(eventsList);
     } catch (error) {
       console.error("Error fetching events: ", error);
@@ -69,26 +107,24 @@ const EventDetailScreen = ({ route, navigation }) => {
           style: "destructive",
           onPress: async () => {
             try {
-              // Reference to the event document
-              const eventDoc = doc(db, "events", eventId);
+              const res = await deleteEvent(eventId);
 
-              // Delete the event from Firestore
-              await deleteDoc(eventDoc);
-              console.log(`Event with ID: ${eventId} has been deleted.`);
-
+              if (!res.success) throw new Error(res.error);
 
               // Navigate back to the Events List
               navigation.goBack(); // This will reload the previous screen
             } catch (error) {
               console.error("Error deleting event: ", error);
-              Alert.alert("Error", "Failed to delete the event. Please try again.");
+              Alert.alert(
+                "Error",
+                "Failed to delete the event. Please try again."
+              );
             }
           },
         },
       ]
     );
   };
-  
 
   return (
     <View style={commonStyles.container}>

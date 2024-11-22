@@ -15,8 +15,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import GradientBackground from "../components/GradientBackground";
-import { db } from "../firebaseConfig"; // Import your Firebase config
-import { collection, addDoc } from "firebase/firestore"; // Firestore methods
+import { createEvent } from "../services/events";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -26,11 +25,15 @@ const NewEventScreen = () => {
 
   // Initialize state, fallback to current values if coming from another screen
   const [eventName, setEventName] = useState(route.params?.eventName || "");
-  const [description, setDescription] = useState(route.params?.description || "");
+  const [description, setDescription] = useState(
+    route.params?.description || ""
+  );
   const [location, setLocation] = useState(route.params?.location || "");
   const [date, setDate] = useState(route.params?.date || new Date());
   const [time, setTime] = useState(route.params?.time || new Date());
-  const [participants, setParticipants] = useState(route.params?.participants || []);
+  const [participants, setParticipants] = useState(
+    route.params?.participants || []
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [pickerMode, setPickerMode] = useState("date"); // "date" or "time"
   const [showModal, setShowModal] = useState(false); // State for confirmation modal
@@ -43,7 +46,9 @@ const NewEventScreen = () => {
   }, [route.params?.selectedParticipants]);
 
   const handleRemoveParticipant = (id) => {
-    setParticipants(participants.filter((participant) => participant.id !== id));
+    setParticipants(
+      participants.filter((participant) => participant.id !== id)
+    );
   };
 
   const handleSaveEvent = async () => {
@@ -54,28 +59,31 @@ const NewEventScreen = () => {
 
     try {
       // Prepare event data to be saved
-      console.log(eventName)
+      console.log(eventName);
       const eventData = {
         title: eventName,
         details: description,
         location: location,
-        date: date.toISOString(), 
+        date: date.toISOString(),
         time: time.toISOString(),
-        participants, 
+        participants,
       };
+      
+      // Add the event to the db
+      const res = await createEvent(eventData);
 
-      // Add the event to Firestore collection "events"
-      const docRef = await addDoc(collection(db, "events"), eventData);
-
+      if (!res.success) throw new Error(res.error);
       // Show success message
       Alert.alert("Success", "Event created successfully!");
 
       // Navigate back to the events list screen
       navigation.navigate("Main");
-
     } catch (error) {
       console.error("Error adding event: ", error);
-      Alert.alert("Error", "There was an issue saving the event. Please try again.");
+      Alert.alert(
+        "Error",
+        "There was an issue saving the event. Please try again."
+      );
     }
   };
 
@@ -190,7 +198,11 @@ const NewEventScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.datePicker, styles.halfWidth, styles.timePickerMargin]}
+                style={[
+                  styles.datePicker,
+                  styles.halfWidth,
+                  styles.timePickerMargin,
+                ]}
                 onPress={() => showDatePickerHandler("time")}
               >
                 <Ionicons name="time" size={24} color="#333" />
@@ -240,7 +252,10 @@ const NewEventScreen = () => {
             </View>
 
             {/* Save Button */}
-            <TouchableOpacity style={styles.saveButton} onPress={handleSaveEvent}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSaveEvent}
+            >
               <Text style={styles.saveButtonText}>Save Event</Text>
             </TouchableOpacity>
           </ScrollView>

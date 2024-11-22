@@ -1,5 +1,4 @@
-// screens/ProfileScreen.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,58 +14,31 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../context/UserProvider";
 import profilePics from "../utils/profilePics";
+import { getFriendsList } from "../services/friendships";
 
 // Get the screen width and height
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const ProfileScreen = ({ onLogout }) => {
   const navigation = useNavigation();
-
   const { user } = useUser();
 
-  // TODO to be deleted
-  const friends = [
-    {
-      id: "1",
-      name: "John Doe",
-      image: require("../assets/profile_pics/BEAR.webp"),
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      image: require("../assets/profile_pics/OWL.webp"),
-    },
-    {
-      id: "3",
-      name: "Alice",
-      image: require("../assets/profile_pics/RABBIT.webp"),
-    },
-    {
-      id: "4",
-      name: "Bob",
-      image: require("../assets/profile_pics/SEAL.webp"),
-    },
-    {
-      id: "5",
-      name: "Carol",
-      image: require("../assets/profile_pics/BEAR.webp"),
-    },
-    {
-      id: "6",
-      name: "Dave",
-      image: require("../assets/profile_pics/OWL.webp"),
-    },
-    {
-      id: "7",
-      name: "Eve",
-      image: require("../assets/profile_pics/RABBIT.webp"),
-    },
-    {
-      id: "8",
-      name: "Frank",
-      image: require("../assets/profile_pics/SEAL.webp"),
-    },
-  ];
+  const [friends, setFriends] = useState([]);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const friendsData = await getFriendsList(user.uid);
+        setFriends(friendsData || []);
+      } catch (error) {
+        Alert.alert("Error", "Failed to fetch friends");
+        setFriends([]);
+      }
+    };
+
+    fetchFriends();
+  }, [user.uid]);
+
   // TODO to be deleted
   const groups = [
     {
@@ -119,11 +91,13 @@ const ProfileScreen = ({ onLogout }) => {
     >
       <Ionicons name="ellipsis-horizontal" size={35} color="#3fb59e" />
       <Text style={styles.listItemText}>More</Text>
-    </TouchableOpacity>  );
-
+    </TouchableOpacity>
+  );
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, {alignItems: 'center'}]}>
+    <ScrollView
+      contentContainerStyle={[styles.container, { alignItems: "center" }]}
+    >
       {/* Back Arrow Icon */}
       <TouchableOpacity
         style={styles.backArrow}
@@ -134,7 +108,9 @@ const ProfileScreen = ({ onLogout }) => {
 
       <View style={styles.profileImageContainer}>
         <Image
-          source={user.avatarFile ? profilePics[user.avatarFile] : profilePics.BEAR }
+          source={
+            user.avatarFile ? profilePics[user.avatarFile] : profilePics.BEAR
+          }
           style={styles.profileImage}
         />
       </View>
@@ -175,8 +151,11 @@ const ProfileScreen = ({ onLogout }) => {
               renderMoreIcon("Friends") // Navigate to Friends for the friends list
             ) : (
               <TouchableOpacity style={styles.listItem}>
-                <Image source={item.image} style={styles.largerCircularImage} />
-                <Text style={styles.listItemText}>{item.name}</Text>
+                <Image
+                  source={profilePics[item.avatarFile]}
+                  style={styles.largerCircularImage}
+                />
+                <Text style={styles.listItemText}>{item.username}</Text>
               </TouchableOpacity>
             )
           }
@@ -238,7 +217,7 @@ const styles = StyleSheet.create({
   },
   backgroundContainer: {
     //flex: 1,
-    minHeight: screenHeight - 80,  // Set a minimum height
+    minHeight: screenHeight - 80, // Set a minimum height
     marginTop: 100,
     paddingTop: 60,
     borderTopLeftRadius: 40,
