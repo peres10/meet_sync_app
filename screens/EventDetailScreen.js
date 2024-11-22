@@ -1,7 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  FlatList,
+  Image,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
+import { db } from "../firebaseConfig";
+import { doc, deleteDoc } from "firebase/firestore";
 
 const EventDetailScreen = ({ route, navigation }) => {
   const friends = [
@@ -18,7 +28,7 @@ const EventDetailScreen = ({ route, navigation }) => {
 
   const allParticipants = [...friends, ...groups];
 
-  const { eventTitle, eventDate, eventDetails, eventId, eventLocation, deleteEvent } = route.params;
+  const { eventTitle, eventDate, eventDetails, eventId, eventLocation, eventTime } = route.params;
 
   // Calculate days left until the event
   const getDaysLeft = (eventDate) => {
@@ -29,10 +39,23 @@ const EventDetailScreen = ({ route, navigation }) => {
     return daysLeft >= 0 ? daysLeft : 0;
   };
 
+  const fetchEvents = async () => {
+    try {
+      const eventsCollection = collection(db, "events"); // Replace "events" with your Firestore collection name
+      const snapshot = await getDocs(eventsCollection);
+      const eventsList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setEvents(eventsList);
+    } catch (error) {
+      console.error("Error fetching events: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const daysLeft = getDaysLeft(eventDate);
 
   // Function to handle delete action
-  const handleDelete = () => {
+  const handleDelete = async () => {
     Alert.alert(
       "Delete Event",
       `Are you sure you want to delete the event: ${eventTitle}?`,
@@ -44,10 +67,22 @@ const EventDetailScreen = ({ route, navigation }) => {
         {
           text: "Delete",
           style: "destructive",
-          onPress: () => {
-            deleteEvent(eventId); // Call the delete function
-            console.log(`Event with ID: ${eventId} has been deleted.`);
-            navigation.goBack(); // Navigate back to EventsListComponent
+          onPress: async () => {
+            try {
+              // Reference to the event document
+              const eventDoc = doc(db, "events", eventId);
+
+              // Delete the event from Firestore
+              await deleteDoc(eventDoc);
+              console.log(`Event with ID: ${eventId} has been deleted.`);
+
+
+              // Navigate back to the Events List
+              navigation.goBack(); // This will reload the previous screen
+            } catch (error) {
+              console.error("Error deleting event: ", error);
+              Alert.alert("Error", "Failed to delete the event. Please try again.");
+            }
           },
         },
       ]
@@ -57,7 +92,10 @@ const EventDetailScreen = ({ route, navigation }) => {
 
   return (
     <View style={commonStyles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
         <Icon name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
       <Text style={styles.titleText}>{eventTitle}</Text>
@@ -67,20 +105,21 @@ const EventDetailScreen = ({ route, navigation }) => {
             month: "short",
             day: "numeric",
             year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
           })}
         </Text>
         <Text style={styles.infoText}>
-          In <Text style={styles.daysNumber}>{daysLeft} </Text>day{daysLeft !== 1 ? "s" : ""}
+          In <Text style={styles.daysNumber}>{daysLeft} </Text>
+          day{daysLeft !== 1 ? "s" : ""}
         </Text>
         <View style={styles.detail_box}>
           <Text style={styles.detailsText}>{eventDetails}</Text>
-          
-        <Text style={styles.participantsText}>
-          Location:
-          </Text> 
-        <Text style={styles.infoText}> {eventLocation} </Text>
-        
-        
+
+          <Text style={styles.participantsText}>Location:</Text>
+          <Text style={styles.infoText}> {eventLocation} </Text>
+
           <Text style={styles.participantsText}>Participants:</Text>
           {/* Display all participants */}
           <FlatList
@@ -147,14 +186,14 @@ const styles = StyleSheet.create({
     color: "#555",
     marginTop: 10,
     width: "100%",
-    flexWrap: "wrap", 
+    flexWrap: "wrap",
   },
   participantsText: {
     alignSelf: "start",
     fontSize: 20,
     color: "#555",
     marginTop: 20,
-    fontWeight:"bold"
+    fontWeight: "bold",
   },
   backButton: {
     position: "absolute",

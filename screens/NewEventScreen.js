@@ -14,6 +14,9 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import GradientBackground from "../components/GradientBackground";
+import { db } from "../firebaseConfig"; // Import your Firebase config
+import { collection, addDoc } from "firebase/firestore"; // Firestore methods
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -23,15 +26,11 @@ const NewEventScreen = () => {
 
   // Initialize state, fallback to current values if coming from another screen
   const [eventName, setEventName] = useState(route.params?.eventName || "");
-  const [description, setDescription] = useState(
-    route.params?.description || ""
-  );
+  const [description, setDescription] = useState(route.params?.description || "");
   const [location, setLocation] = useState(route.params?.location || "");
   const [date, setDate] = useState(route.params?.date || new Date());
   const [time, setTime] = useState(route.params?.time || new Date());
-  const [participants, setParticipants] = useState(
-    route.params?.participants || []
-  );
+  const [participants, setParticipants] = useState(route.params?.participants || []);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [pickerMode, setPickerMode] = useState("date"); // "date" or "time"
   const [showModal, setShowModal] = useState(false); // State for confirmation modal
@@ -44,18 +43,40 @@ const NewEventScreen = () => {
   }, [route.params?.selectedParticipants]);
 
   const handleRemoveParticipant = (id) => {
-    setParticipants(
-      participants.filter((participant) => participant.id !== id)
-    );
+    setParticipants(participants.filter((participant) => participant.id !== id));
   };
 
-  const handleSaveEvent = () => {
+  const handleSaveEvent = async () => {
     if (!eventName || !description || !location) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    Alert.alert("Success", "Event created successfully!");
-    navigation.navigate("Main");
+
+    try {
+      // Prepare event data to be saved
+      console.log(eventName)
+      const eventData = {
+        title: eventName,
+        details: description,
+        location: location,
+        date: date.toISOString(), 
+        time: time.toISOString(),
+        participants, 
+      };
+
+      // Add the event to Firestore collection "events"
+      const docRef = await addDoc(collection(db, "events"), eventData);
+
+      // Show success message
+      Alert.alert("Success", "Event created successfully!");
+
+      // Navigate back to the events list screen
+      navigation.navigate("Main");
+
+    } catch (error) {
+      console.error("Error adding event: ", error);
+      Alert.alert("Error", "There was an issue saving the event. Please try again.");
+    }
   };
 
   const showDatePickerHandler = (mode) => {
@@ -88,156 +109,154 @@ const NewEventScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Back Arrow */}
-      <TouchableOpacity style={styles.backArrow} onPress={handleBackPress}>
-        <Ionicons name="arrow-back" size={30} color="#333" />
-      </TouchableOpacity>
+    <GradientBackground style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {/* Back Arrow */}
+        <TouchableOpacity style={styles.backArrow} onPress={handleBackPress}>
+          <Ionicons name="arrow-back" size={30} color="#333" />
+        </TouchableOpacity>
 
-      <Text style={styles.header}>Create New Event</Text>
+        <Text style={styles.header}>Create New Event</Text>
 
-      {/* Confirmation Modal */}
-      <Modal
-        visible={showModal}
-        transparent
-        animationType="slide"
-        onRequestClose={handleCancel}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>
-              Are you sure you want to cancel creating this event?
-            </Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={handleCancel}
-              >
-                <Text style={styles.modalButtonText}>No</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.modalConfirmButton]}
-                onPress={handleConfirm}
-              >
-                <Text style={styles.modalButtonText}>Yes</Text>
-              </TouchableOpacity>
+        {/* Confirmation Modal */}
+        <Modal
+          visible={showModal}
+          transparent
+          animationType="slide"
+          onRequestClose={handleCancel}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>
+                Are you sure you want to cancel creating this event?
+              </Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={handleCancel}
+                >
+                  <Text style={styles.modalButtonText}>No</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.modalButton, styles.modalConfirmButton]}
+                  onPress={handleConfirm}
+                >
+                  <Text style={styles.modalButtonText}>Yes</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
+        </Modal>
+
+        {/* Rounded Container */}
+        <View style={styles.roundedContainer}>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+            {/* Event Name */}
+            <TextInput
+              style={styles.input}
+              placeholder="Event Name"
+              value={eventName}
+              onChangeText={setEventName}
+            />
+
+            {/* Description */}
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              placeholder="Description"
+              value={description}
+              onChangeText={setDescription}
+              multiline
+            />
+
+            {/* Location */}
+            <TextInput
+              style={styles.input}
+              placeholder="Location"
+              value={location}
+              onChangeText={setLocation}
+            />
+
+            {/* Date and Time Pickers in a Row */}
+            <View style={styles.dateTimeRow}>
+              <TouchableOpacity
+                style={[styles.datePicker, styles.halfWidth]}
+                onPress={() => showDatePickerHandler("date")}
+              >
+                <Ionicons name="calendar" size={24} color="#333" />
+                <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.datePicker, styles.halfWidth, styles.timePickerMargin]}
+                onPress={() => showDatePickerHandler("time")}
+              >
+                <Ionicons name="time" size={24} color="#333" />
+                <Text style={styles.dateText}>{time.toLocaleTimeString()}</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Participants Box */}
+            <View style={styles.participantsBox}>
+              {participants.length === 0 ? (
+                <Text style={styles.emptyText}>No participants selected</Text>
+              ) : (
+                <View style={styles.participantsContainer}>
+                  {participants.map((participant) => (
+                    <View key={participant.id} style={styles.participantItem}>
+                      <Image
+                        source={participant.image}
+                        style={styles.participantImage}
+                      />
+                      <TouchableOpacity
+                        style={styles.trashIcon}
+                        onPress={() => handleRemoveParticipant(participant.id)}
+                      >
+                        <FontAwesome name="trash" size={16} color="#f00" />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              )}
+
+              {/* Add Participants Button */}
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() =>
+                  navigation.navigate("SelectParticipantsScreen", {
+                    currentParticipants: participants,
+                    eventName,
+                    description,
+                    location,
+                    date,
+                    time,
+                  })
+                }
+              >
+                <Ionicons name="add" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Save Button */}
+            <TouchableOpacity style={styles.saveButton} onPress={handleSaveEvent}>
+              <Text style={styles.saveButtonText}>Save Event</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
-      </Modal>
 
-      {/* Rounded Container */}
-      <View style={styles.roundedContainer}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-        >
-          {/* Event Name */}
-          <TextInput
-            style={styles.input}
-            placeholder="Event Name"
-            value={eventName}
-            onChangeText={setEventName}
+        {/* DateTimePicker */}
+        {showDatePicker && (
+          <DateTimePicker
+            value={pickerMode === "date" ? date : time}
+            mode={pickerMode}
+            display="default"
+            onChange={onDateChange}
           />
-
-          {/* Description */}
-          <TextInput
-            style={[styles.input, styles.textArea]}
-            placeholder="Description"
-            value={description}
-            onChangeText={setDescription}
-            multiline
-          />
-
-          {/* Location */}
-          <TextInput
-            style={styles.input}
-            placeholder="Location"
-            value={location}
-            onChangeText={setLocation}
-          />
-
-          {/* Date and Time Pickers in a Row */}
-          <View style={styles.dateTimeRow}>
-            <TouchableOpacity
-              style={[styles.datePicker, styles.halfWidth]}
-              onPress={() => showDatePickerHandler("date")}
-            >
-              <Ionicons name="calendar" size={24} color="#333" />
-              <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.datePicker,
-                styles.halfWidth,
-                styles.timePickerMargin,
-              ]}
-              onPress={() => showDatePickerHandler("time")}
-            >
-              <Ionicons name="time" size={24} color="#333" />
-              <Text style={styles.dateText}>{time.toLocaleTimeString()}</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Participants Box */}
-          <View style={styles.participantsBox}>
-            {participants.length === 0 ? (
-              <Text style={styles.emptyText}>No participants selected</Text>
-            ) : (
-              <View style={styles.participantsContainer}>
-                {participants.map((participant) => (
-                  <View key={participant.id} style={styles.participantItem}>
-                    <Image
-                      source={participant.image}
-                      style={styles.participantImage}
-                    />
-                    <TouchableOpacity
-                      style={styles.trashIcon}
-                      onPress={() => handleRemoveParticipant(participant.id)}
-                    >
-                      <FontAwesome name="trash" size={16} color="#f00" />
-                    </TouchableOpacity>
-                  </View>
-                ))}
-              </View>
-            )}
-
-            {/* Add Participants Button */}
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() =>
-                navigation.navigate("SelectParticipantsScreen", {
-                  currentParticipants: participants,
-                  eventName,
-                  description,
-                  location,
-                  date,
-                  time,
-                })
-              }
-            >
-              <Ionicons name="add" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
-
-          {/* Save Button */}
-          <TouchableOpacity style={styles.saveButton} onPress={handleSaveEvent}>
-            <Text style={styles.saveButtonText}>Save Event</Text>
-          </TouchableOpacity>
-        </ScrollView>
+        )}
       </View>
-
-      {/* DateTimePicker */}
-      {showDatePicker && (
-        <DateTimePicker
-          value={pickerMode === "date" ? date : time}
-          mode={pickerMode}
-          display="default"
-          onChange={onDateChange}
-        />
-      )}
-    </View>
+    </GradientBackground>
   );
 };
 
