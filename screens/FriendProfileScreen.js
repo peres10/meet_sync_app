@@ -39,9 +39,6 @@ const FriendProfileScreen = () => {
           <Text style={styles.userDetails}>
             <Ionicons name="call" size={16} /> {user.phoneNumber || "N/A"}
           </Text>
-          <Text style={styles.userDetails}>
-            <Ionicons name="location" size={16} /> {user.location || "N/A"}
-          </Text>
         </View>
 
         <Text style={styles.sectionTitle}>Mutual Groups:</Text>
