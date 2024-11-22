@@ -14,7 +14,6 @@ import {
 } from "firebase/firestore"; // Firestore methods
 
 export const createEvent = async (eventData) => {
-  console.log(eventData);
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
 
@@ -57,7 +56,7 @@ export const deleteEvent = async (userId, eventId,eventTitle) => {
 
     return { success: true };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return { success: false, error: e };
   }
 };
@@ -76,7 +75,7 @@ export const leaveEvent = async (userId, eventId, eventTitle) => {
 
     return { success: true };
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return { success: false, error: e };
   }
 };
@@ -108,7 +107,7 @@ export const getEventsParticipating = async (uid) => {
     const eventsParticipatingDoc = await getDoc(eventsParticipatingDocRef);
 
     if (!eventsParticipatingDoc.exists()) {
-      console.log("No such document!");
+      console.error("No such document!");
       return [];
     }
 
@@ -127,7 +126,7 @@ export const getEventsParticipating = async (uid) => {
       })
     );
 
-    console.log(eventsDetails);
+    console.error(eventsDetails);
     return eventsDetails;
   } catch (e) {
     console.error("Error fetching events:", e);
