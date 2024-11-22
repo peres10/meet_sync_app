@@ -9,10 +9,13 @@ import {
 } from "react-native";
 import { eventStyles as styles } from "../styles/commonStyles";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { getAllEvents } from "../services/events";
+import { getAllEvents, getEventsParticipating } from "../services/events";
+import { useUser } from "../context/UserProvider";
 
 const EventsListComponent = () => {
   const navigation = useNavigation();
+
+  const { user } = useUser();
 
   // State to hold events data and loading indicator
   const [events, setEvents] = useState([]);
@@ -22,7 +25,7 @@ const EventsListComponent = () => {
   const fetchEvents = async () => {
     // TODO this should be get events user is participating but for now I'll just put it like this
     try {
-      const eventsList = await getAllEvents();
+      const eventsList = await getEventsParticipating(user.uid);
 
       setEvents(eventsList);
     } catch (error) {
@@ -77,6 +80,7 @@ const EventsListComponent = () => {
                   eventLocation: item.location,
                   eventId: item.id,
                   eventTime: item.time,
+                  eventCreatorId: item.creatorId,
                 })
               }
             >
