@@ -6,12 +6,33 @@ import {
   doc,
   deleteDoc,
   getDocs,
-  getDoc
+  getDoc,
+  arrayUnion,
+  setDoc,
+  updateDoc,
+  arrayRemove,
 } from "firebase/firestore"; // Firestore methods
 
 export const createEvent = async (eventData) => {
+  console.log(eventData);
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
+
+    const eventRef = doc(db, "events", docRef.id);
+
+    const userEventsRef = doc(
+      db,
+      "user_events_participating",
+      eventData.creatorId
+    );
+
+    await setDoc(
+      userEventsRef,
+      {
+        events: arrayUnion(eventRef),
+      },
+      { merge: true }
+    );
     return { success: true };
   } catch (e) {
     return { success: false, error: e };
@@ -29,6 +50,23 @@ export const deleteEvent = async (eventId) => {
     Alert.alert(`Event with ID: ${eventId} has been deleted.`);
 
     return { success: true };
+  } catch (e) {
+    console.log(e);
+    return { success: false, error: e };
+  }
+};
+
+export const leaveEvent = async (userId, eventId) => {
+  try {
+    const eventRef = doc(db, "events", eventId);
+
+    const userEventsRef = doc(db, "user_events_participating", userId);
+
+    await updateDoc(userEventsRef, {
+      events: arrayRemove(eventRef),
+    })
+
+    return { success: true};
   } catch (e) {
     console.log(e);
     return { success: false, error: e };
@@ -71,7 +109,6 @@ export const getEventsParticipating = async (uid) => {
       return [];
     }
 
-    
     const eventsDetails = await Promise.all(
       events.map(async (eventRef) => {
         const eventDoc = await getDoc(eventRef);
@@ -82,6 +119,7 @@ export const getEventsParticipating = async (uid) => {
       })
     );
 
+    console.log(eventsDetails);
     return eventsDetails;
   } catch (e) {
     console.error("Error fetching events:", e);

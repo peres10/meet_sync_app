@@ -16,12 +16,14 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import GradientBackground from "../components/GradientBackground";
 import { createEvent } from "../services/events";
+import { useUser } from "../context/UserProvider";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 const NewEventScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { user } = useUser();
 
   // Initialize state, fallback to current values if coming from another screen
   const [eventName, setEventName] = useState(route.params?.eventName || "");
@@ -65,9 +67,10 @@ const NewEventScreen = () => {
         location: location,
         date: date.toISOString(),
         time: time.toISOString(),
-        participants,
+        creatorId: user.uid,
+        participants
       };
-      
+
       // Add the event to the db
       const res = await createEvent(eventData);
 
@@ -212,15 +215,15 @@ const NewEventScreen = () => {
             </View>
 
             {/* DateTimePicker */}
-        {showDatePicker && (
-          <DateTimePicker
-            value={pickerMode === "date" ? date : time}
-            mode={pickerMode}
-            display="default"
-            onChange={onDateChange}
-            minimumDate={pickerMode === "date" ? todayDate : null}
-          />
-        )}
+            {showDatePicker && (
+              <DateTimePicker
+                value={pickerMode === "date" ? date : time}
+                mode={pickerMode}
+                display="default"
+                onChange={onDateChange}
+                minimumDate={pickerMode === "date" ? todayDate : null}
+              />
+            )}
 
             {/* Participants Box */}
             <View style={styles.participantsBox}>
@@ -272,7 +275,6 @@ const NewEventScreen = () => {
             </TouchableOpacity>
           </ScrollView>
         </View>
-
       </View>
     </GradientBackground>
   );

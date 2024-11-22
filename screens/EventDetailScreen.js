@@ -14,7 +14,7 @@ import {
   screenHeight,
   screenWidth,
 } from "../styles/commonStyles";
-import { deleteEvent } from "../services/events";
+import { deleteEvent, leaveEvent } from "../services/events";
 import { useUser } from "../context/UserProvider";
 
 const EventDetailScreen = ({ route, navigation }) => {
@@ -79,33 +79,34 @@ const EventDetailScreen = ({ route, navigation }) => {
 
   const daysLeft = getDaysLeft(eventDate);
 
+  const isUserEventCreator = user.uid == eventCreatorId 
 
   // Function to handle delete action
   const handleDeleteOrLeave = async () => {
     Alert.alert(
-      "Delete Event",
-      `Are you sure you want to delete the event: ${eventTitle}?`,
+      isUserEventCreator ? "Delete Event" : "Leave Event",
+      `Are you sure you want to ${isUserEventCreator ? "delete" : "leave"} the event: ${eventTitle}?`,
       [
         {
           text: "Cancel",
           style: "cancel",
         },
         {
-          text: "Delete",
+          text: isUserEventCreator ? "Delete" : "Leave",
           style: "destructive",
           onPress: async () => {
             try {
-              const res = await deleteEvent(eventId);
+              const res = isUserEventCreator ? await deleteEvent(eventId) : await leaveEvent(user.uid, eventId);
 
               if (!res.success) throw new Error(res.error);
 
               // Navigate back to the Events List
               navigation.goBack(); // This will reload the previous screen
             } catch (error) {
-              console.error("Error deleting event: ", error);
+              console.error("Error deleting/leaving event: ", error);
               Alert.alert(
                 "Error",
-                "Failed to delete the event. Please try again."
+                "Failed to delete/leave the event. Please try again."
               );
             }
           },
@@ -161,7 +162,7 @@ const EventDetailScreen = ({ route, navigation }) => {
           />
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteOrLeave}>
-          <Text style={styles.deleteButtonText}>{user.uid == eventCreatorId ? "Delete" : "Leave"}</Text>
+          <Text style={styles.deleteButtonText}>{isUserEventCreator ? "Delete" : "Leave"}</Text>
         </TouchableOpacity>
       </View>
     </View>
