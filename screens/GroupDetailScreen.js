@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import profilePics from "../utils/profilePics"; // Assuming profilePics contains group images or defaults
+import groupPics from "../utils/groupPics"; // Assuming profilePics contains group images or defaults
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -11,7 +11,7 @@ const GroupDetailScreen = () => {
   const navigation = useNavigation();
 
   const { group } = route.params || {}; // Default to empty object if params are missing
-  const groupAvatar = group?.avatarFile ? profilePics[group.avatarFile] : profilePics.BEAR;
+  const groupAvatar = group?.imageFile ? groupPics[group.imageFile] : profilePics.MUSIC;
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { alignItems: "center" }]}>

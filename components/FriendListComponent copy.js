@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { useUser } from "../context/UserProvider";
+import {screenHeight, screenWidth } from "../styles/commonStyles";
 import profilePics from "../utils/profilePics";
 
 const FriendListComponent = () => {
@@ -44,10 +45,6 @@ const FriendListComponent = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Your Friends</Text>
-      </View>
-
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" style={styles.loadingIndicator} />
       ) : (
@@ -80,14 +77,15 @@ const FriendListComponent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    elevation: 4,
-    overflow: "hidden",
-    marginVertical: 20,
-    padding: 10,
     flex: 1,
-    width: "100%",
+    top: 20,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingHorizontal: 16,
+    alignItems: "stretch",
+    width: screenWidth,
   },
   profileImageContainer: {
     width: 44,
@@ -105,15 +103,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     resizeMode: "cover",
   },
-  header: {
-    alignItems: "center",
-    paddingVertical: 10,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
   listContent: {
     paddingVertical: 10,
   },
@@ -124,6 +113,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
+    width: screenWidth,
   },
   eventInfo: {
     flex: 1,
