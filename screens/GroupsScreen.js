@@ -7,6 +7,11 @@ import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles"
 import GroupsListComponent from "../components/GroupListComponent";
 
 const GroupsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
+
+  const handleGroupClick = (group) => {
+    navigation.navigate("GroupDetail", { group });
+  };
+
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity

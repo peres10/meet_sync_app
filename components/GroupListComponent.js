@@ -53,43 +53,36 @@ const fetchGroups = async () => {
             return (
               
               <TouchableOpacity
-              
-                style={styles.eventItem}  // Reusing the same eventItem style for group item
-                onPress={() =>
-                  navigation.navigate("GroupDetail", {
-                    title: item.groupName,
-                    details: item.description,
-                    private: item.isPrivate,
-                  })
-                }
-              >
-                            <View style={styles.profileImageContainer}>
-              <Image
-                source={
-                  user.avatarFile
-                    ? profilePics[user.avatarFile]
-                    : profilePics.BEAR
-                }
-                style={styles.profileImage}
-              />
-            </View>
-                <View style={styles.eventInfo}>
-                  <Text style={styles.eventTitle}>{item.groupName}</Text>
-                  <Text style={styles.eventDate}>{item.membersCount}4 members</Text>
-                </View>
-
-                <Text style={styles.daysLeft}>
+              style={styles.eventItem}
+              onPress={() =>
+                navigation.navigate("GroupDetail", { group: item }) // Pass full group object
+              }
+            >
+              <View style={styles.profileImageContainer}>
+                <Image
+                  source={
+                    item.avatarFile
+                      ? profilePics[item.avatarFile] // Use group-specific avatar
+                      : profilePics.BEAR // Default avatar
+                  }
+                  style={styles.profileImage}
+                />
+              </View>
+              <View style={styles.eventInfo}>
+                <Text style={styles.eventTitle}>{item.groupName}</Text>
+                <Text style={styles.eventDate}>{item.members?.length || 0} members</Text>
+              </View>
+              <Text style={styles.daysLeft}>
                 <Text
-                style={[
-                  styles.daysNumber,
-                  { color: item.isPrivate ? '#d50000' : '#007BFF' } // Red for private, blue for public
-                ]}
-              >
-                {item.isPrivate ? "Private" : "Public"}
-              </Text>
-
+                  style={[
+                    styles.daysNumber,
+                    { color: item.isPrivate ? "#d50000" : "#007BFF" }, // Red for private, blue for public
+                  ]}
+                >
+                  {item.isPrivate ? "Private" : "Public"}
                 </Text>
-              </TouchableOpacity>
+              </Text>
+            </TouchableOpacity>
             );
           }}
           contentContainerStyle={styles.listContent}

@@ -4,11 +4,13 @@ import GradientBackground from "./GradientBackground";
 import HomeScreen from "../screens/HomeScreen";
 import EventsScreen from "../screens/EventsScreen";
 import EventDetailScreen from "../screens/EventDetailScreen"
+import GroupDetailScreen from "../screens/GroupDetailScreen"
 import GroupsScreen from "../screens/GroupsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import NotificationsScreen from "../screens/NotificationsScreen";
 import CustomFooter from "./CustomFooter";
 import ProfileScreen from "../screens/ProfileScreen";
+import FriendProfileScreen from "../screens/FriendProfileScreen";
 import AddButton from "./AddButton";
 import EditProfileScreen from "../screens/EditProfile";
 import NewEventScreen from "../screens/NewEventScreen";
@@ -20,6 +22,13 @@ const Stack = createStackNavigator();
 const ProfileScreenWithFooter = ({ onLogout }) => (
   <GradientBackground style={{ flex: 1 }}>
     <ProfileScreen onLogout={onLogout} />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const FriendProfileScreenWithFooter = ({ onLogout }) => (
+  <GradientBackground style={{ flex: 1 }}>
+    <FriendProfileScreen onLogout={onLogout} />
     <CustomFooter />
   </GradientBackground>
 );
@@ -162,6 +171,10 @@ const NavBar = ({ onLogout }) => {
         children={() => <ProfileScreenWithFooter onLogout={onLogout} />}
       />
       <Stack.Screen
+        name="FriendProfile"
+        children={() => <FriendProfileScreenWithFooter options={{ headerShown: false }} />}
+      />
+      <Stack.Screen
         name="EditProfile"
         component={EditProfileScreenWithFooter}
       />
@@ -206,6 +219,15 @@ const NavBar = ({ onLogout }) => {
                 name={"add"}
               onPress={() => props.navigation.navigate("NewEventScreen")}
             />
+            <CustomFooter />
+          </GradientBackground>
+        )}
+      />
+      <Stack.Screen
+        name="GroupDetail"
+        children={(props) => (
+          <GradientBackground style={{ flex: 1 }}>
+            <GroupDetailScreen {...props} />
             <CustomFooter />
           </GradientBackground>
         )}

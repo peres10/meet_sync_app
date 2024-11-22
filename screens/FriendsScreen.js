@@ -1,11 +1,12 @@
-// screens/FriendsScreen.js
+// screens/GroupsScreen.js
 import React from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import Button from "../components/Button";
 import Icon from "react-native-vector-icons/Ionicons";
 import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
+import FriendsListComponent from "../components/FriendListComponent";
 
-const FriendsScreen = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
+const FriendsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
@@ -17,8 +18,10 @@ const FriendsScreen = ({ navigation, isHiddenVisible, toggleHiddenElement }) => 
         <Icon name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
       <Text style={styles.titleText}>Friends</Text>
-      <TextInput style={styles.input} placeholder="Search Friends" />
-      <View style={styles.content_box}></View>
+      <TextInput style={styles.input} placeholder="Search Groups" />
+      <View style={styles.content_box}>
+        <FriendsListComponent/>
+      </View>
     </View>
   );
 };
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
   },
   content_box: {
     width: screenWidth,
-    height: screenHeight * 0.90,
+    height: screenHeight * 0.70,
     alignItems: "center",
     padding: 20,
     backgroundColor: "rgba(255, 255, 255, 0.40)",

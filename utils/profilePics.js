@@ -1,4 +1,4 @@
-export default {
+  export default {
   AXOLOTL: require("../assets/profile_pics/AXOLOTL.webp"),
   BEAR: require("../assets/profile_pics/BEAR.webp"),
   CAT: require("../assets/profile_pics/CAT.webp"),
