@@ -1,31 +1,34 @@
-// screens/GroupsScreen.js
-import React from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import Button from "../components/Button";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { commonStyles, screenHeight, screenWidth } from "../styles/commonStyles";
 import GroupsListComponent from "../components/GroupListComponent";
 
-const GroupsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => {
+const GroupsScreen = ({ navigation }) => {
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  const handleGroupClick = (group) => {
-    navigation.navigate("GroupDetail", { group });
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
   };
 
   return (
     <View style={commonStyles.container}>
       <TouchableOpacity
-        style={styles.backButton} 
-        onPress={() =>
-          navigation.goBack()
-        }
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
       >
         <Icon name="arrow-back" size={30} color="white" />
       </TouchableOpacity>
       <Text style={styles.titleText}>Groups</Text>
-      <TextInput style={styles.input} placeholder="Search Groups" />
+      <TextInput
+        style={styles.input}
+        placeholder="Search Groups"
+        value={searchQuery}
+        onChangeText={handleSearchChange} // Update search query
+      />
       <View style={styles.content_box}>
-        <GroupsListComponent />
+        <GroupsListComponent searchQuery={searchQuery} />
       </View>
     </View>
   );
@@ -34,7 +37,7 @@ const GroupsScreen  = ({ navigation, isHiddenVisible, toggleHiddenElement }) => 
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   content_box: {
     width: screenWidth,
