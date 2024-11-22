@@ -107,7 +107,6 @@ export const getEventsParticipating = async (uid) => {
     const eventsParticipatingDoc = await getDoc(eventsParticipatingDocRef);
 
     if (!eventsParticipatingDoc.exists()) {
-      console.error("No such document!");
       return [];
     }
 
@@ -126,7 +125,6 @@ export const getEventsParticipating = async (uid) => {
       })
     );
 
-    console.error(eventsDetails);
     return eventsDetails;
   } catch (e) {
     console.error("Error fetching events:", e);

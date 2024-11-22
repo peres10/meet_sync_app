@@ -8,13 +8,11 @@ export const getFriendsList = async (uid) => {
     const friendshipDoc = await getDoc(friendshipDocRef);
 
     if (!friendshipDoc.exists()) {
-      console.error("No such document!");
       return [];
     }
 
     const { friends } = friendshipDoc.data(); // Assuming `friends` is an array of document references
     if (!friends || friends.length === 0) {
-      console.error("No friends found!");
       return [];
     }
 
