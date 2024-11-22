@@ -59,6 +59,7 @@ const MainScreens = (props) => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Home"
+          options={{ gestureEnabled: false }}
           children={() => (
             <>
               <HomeScreen
@@ -155,11 +156,11 @@ const MainScreens = (props) => {
 const NavBar = ({ onLogout }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Main" component={MainScreens} />
+      <Stack.Screen name="Main" component={MainScreens} options={{ gestureEnabled: false }}/>
       <Stack.Screen
         name="Profile"
         children={() => <ProfileScreenWithFooter onLogout={onLogout} />}
-      />
+        />
       <Stack.Screen
         name="EditProfile"
         component={EditProfileScreenWithFooter}
