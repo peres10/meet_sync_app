@@ -143,10 +143,11 @@ const SelectParticipantsScreen = () => {
   };
 
   const handleBack = () => {
-    navigation.navigate("NewEventScreen", {
-      selectedParticipants: route.params?.currentParticipants || [], // Restore the previous state
-      ...route.params, // Pass all other fields back
-    });
+    // navigation.navigate("NewEventScreen", {
+    //   selectedParticipants: route.params?.currentParticipants || [], // Restore the previous state
+    //   ...route.params, // Pass all other fields back
+    // });
+    navigation.goBack()
   };
 
   return (
