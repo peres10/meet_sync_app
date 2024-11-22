@@ -65,9 +65,9 @@ const EventDetailScreen = ({ route, navigation }) => {
     eventId,
     eventLocation,
     eventTime,
-    eventCreatorId
+    eventCreatorId,
   } = route.params;
-  
+
   // Calculate days left until the event
   const getDaysLeft = (eventDate) => {
     const today = new Date();
@@ -79,13 +79,15 @@ const EventDetailScreen = ({ route, navigation }) => {
 
   const daysLeft = getDaysLeft(eventDate);
 
-  const isUserEventCreator = user.uid == eventCreatorId 
+  const isUserEventCreator = user.uid == eventCreatorId;
 
   // Function to handle delete action
   const handleDeleteOrLeave = async () => {
     Alert.alert(
       isUserEventCreator ? "Delete Event" : "Leave Event",
-      `Are you sure you want to ${isUserEventCreator ? "delete" : "leave"} the event: ${eventTitle}?`,
+      `Are you sure you want to ${
+        isUserEventCreator ? "delete" : "leave"
+      } the event: ${eventTitle}?`,
       [
         {
           text: "Cancel",
@@ -96,7 +98,9 @@ const EventDetailScreen = ({ route, navigation }) => {
           style: "destructive",
           onPress: async () => {
             try {
-              const res = isUserEventCreator ? await deleteEvent(eventId) : await leaveEvent(user.uid, eventId);
+              const res = isUserEventCreator
+                ? await deleteEvent(user.uid, eventId, eventTitle)
+                : await leaveEvent(user.uid, eventId, eventTitle);
 
               if (!res.success) throw new Error(res.error);
 
@@ -161,8 +165,13 @@ const EventDetailScreen = ({ route, navigation }) => {
             showsVerticalScrollIndicator={false}
           />
         </View>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDeleteOrLeave}>
-          <Text style={styles.deleteButtonText}>{isUserEventCreator ? "Delete" : "Leave"}</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDeleteOrLeave}
+        >
+          <Text style={styles.deleteButtonText}>
+            {isUserEventCreator ? "Delete" : "Leave"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

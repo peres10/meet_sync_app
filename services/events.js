@@ -39,15 +39,21 @@ export const createEvent = async (eventData) => {
   }
 };
 
-export const deleteEvent = async (eventId) => {
+export const deleteEvent = async (userId, eventId,eventTitle) => {
   try {
     // Reference to the event document
     const eventDoc = doc(db, "events", eventId);
 
+    const userEventsRef = doc(db, "user_events_participating", userId);
+
+    await updateDoc(userEventsRef, {
+      events: arrayRemove(eventDoc),
+    });
+
     // Delete the event from Firestore
     await deleteDoc(eventDoc);
 
-    Alert.alert(`Event with ID: ${eventId} has been deleted.`);
+    Alert.alert(`Event ${eventTitle} has been deleted.`);
 
     return { success: true };
   } catch (e) {
@@ -56,7 +62,7 @@ export const deleteEvent = async (eventId) => {
   }
 };
 
-export const leaveEvent = async (userId, eventId) => {
+export const leaveEvent = async (userId, eventId, eventTitle) => {
   try {
     const eventRef = doc(db, "events", eventId);
 
@@ -64,9 +70,11 @@ export const leaveEvent = async (userId, eventId) => {
 
     await updateDoc(userEventsRef, {
       events: arrayRemove(eventRef),
-    })
+    });
 
-    return { success: true};
+    Alert.alert(`You have left the event ${eventTitle}.`);
+
+    return { success: true };
   } catch (e) {
     console.log(e);
     return { success: false, error: e };
