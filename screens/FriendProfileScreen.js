@@ -46,19 +46,24 @@ const FriendProfileScreen = () => {
           <Text style={styles.userDetails}>
             <Ionicons name="call" size={16} /> {user.phoneNumber || "N/A"}
           </Text>
-          <Text style={styles.userDetails}>
-            <Ionicons name="location" size={16} /> {user.location || "N/A"}
-          </Text>
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={() => navigation.navigate("ChatScreen", { destinatary: user })}
-          >
-             <Ionicons name="mail" size={16} color="#fff" />
-            <Text style={styles.saveButtonText}>Send Message</Text>
-          </TouchableOpacity>
         </View>
+
+        <Text style={styles.sectionTitle}>Mutual Groups:</Text>
+        <View style={styles.searchContainer}>
+            <Text style={styles.notFoundText}>No groups in common</Text>
+        </View>
+
+        <Text style={styles.sectionTitle}>Mutual Friends:</Text>
+        <View style={styles.searchContainer}>
+            <Text style={styles.notFoundText}>No friends in common</Text>
+        </View>
+
       </View>
+
+      
     </View>
+
+    
   );
 };
 
@@ -74,6 +79,24 @@ const styles = StyleSheet.create({
     top: 50,
     left: 20,
     zIndex: 10,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#3fb59e",
+    marginBottom: 10,
+    alignSelf: "flex-start",
+    marginLeft: 16,
+  },
+  searchContainer: {
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom:40,
+  },
+  notFoundText: {
+    fontSize: 16,
+    color: "#777",
+    marginTop: 10,
   },
   profileImageContainer: {
     alignItems: "center",

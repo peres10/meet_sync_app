@@ -12,7 +12,6 @@ import {
   Modal,
   Switch, // Import the Switch component
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import GradientBackground from "../components/GradientBackground";
@@ -73,21 +72,6 @@ const NewGroupScreen = () => {
     }
   };
 
-  const showDatePickerHandler = (mode) => {
-    setShowDatePicker(true);
-    setPickerMode(mode);
-  };
-
-  const onDateChange = (event, selectedValue) => {
-    setShowDatePicker(false);
-    if (selectedValue) {
-      if (pickerMode === "date") {
-        setDate(selectedValue);
-      } else {
-        setTime(selectedValue);
-      }
-    }
-  };
 
   const handleBackPress = () => {
     setShowModal(true); // Show the confirmation modal
@@ -197,8 +181,6 @@ const NewGroupScreen = () => {
                     groupName,
                     description,
                     location,
-                    date,
-                    time,
                   })
                 }
               >

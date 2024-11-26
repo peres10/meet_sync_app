@@ -14,10 +14,12 @@ import {
   screenHeight,
   screenWidth,
 } from "../styles/commonStyles";
-import { db } from "../firebaseConfig";
-import { deleteEvent } from "../services/events";
+import { deleteEvent, leaveEvent } from "../services/events";
+import { useUser } from "../context/UserProvider";
 
 const EventDetailScreen = ({ route, navigation }) => {
+  const { user } = useUser();
+
   const friends = [
     {
       id: "1",
@@ -63,6 +65,7 @@ const EventDetailScreen = ({ route, navigation }) => {
     eventId,
     eventLocation,
     eventTime,
+    eventCreatorId,
   } = route.params;
 
   // Calculate days left until the event
@@ -74,50 +77,40 @@ const EventDetailScreen = ({ route, navigation }) => {
     return daysLeft >= 0 ? daysLeft : 0;
   };
 
-  const fetchEvents = async () => {
-    try {
-      const eventsCollection = collection(db, "events"); // Replace "events" with your Firestore collection name
-      const snapshot = await getDocs(eventsCollection);
-      const eventsList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setEvents(eventsList);
-    } catch (error) {
-      console.error("Error fetching events: ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const daysLeft = getDaysLeft(eventDate);
 
+  const isUserEventCreator = user.uid == eventCreatorId;
+
   // Function to handle delete action
-  const handleDelete = async () => {
+  const handleDeleteOrLeave = async () => {
     Alert.alert(
-      "Delete Event",
-      `Are you sure you want to delete the event: ${eventTitle}?`,
+      isUserEventCreator ? "Delete Event" : "Leave Event",
+      `Are you sure you want to ${
+        isUserEventCreator ? "delete" : "leave"
+      } the event: ${eventTitle}?`,
       [
         {
           text: "Cancel",
           style: "cancel",
         },
         {
-          text: "Delete",
+          text: isUserEventCreator ? "Delete" : "Leave",
           style: "destructive",
           onPress: async () => {
             try {
-              const res = await deleteEvent(eventId);
+              const res = isUserEventCreator
+                ? await deleteEvent(user.uid, eventId, eventTitle)
+                : await leaveEvent(user.uid, eventId, eventTitle);
 
               if (!res.success) throw new Error(res.error);
 
               // Navigate back to the Events List
               navigation.goBack(); // This will reload the previous screen
             } catch (error) {
-              console.error("Error deleting event: ", error);
+              console.error("Error deleting/leaving event: ", error);
               Alert.alert(
                 "Error",
-                "Failed to delete the event. Please try again."
+                "Failed to delete/leave the event. Please try again."
               );
             }
           },
@@ -172,8 +165,13 @@ const EventDetailScreen = ({ route, navigation }) => {
             showsVerticalScrollIndicator={false}
           />
         </View>
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.deleteButtonText}>Delete</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDeleteOrLeave}
+        >
+          <Text style={styles.deleteButtonText}>
+            {isUserEventCreator ? "Delete" : "Leave"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -134,10 +134,6 @@ const ProfileScreen = ({ onLogout }) => {
           <Text style={styles.userDetails}>
             <Ionicons name="mail" size={16} /> {user.email}
           </Text>
-          <Text style={styles.userDetails}>
-            <Ionicons name="location" size={16} />{" "}
-            {user.location ? user.location : ""}
-          </Text>
         </View>
 
         {/* Friends List */}
