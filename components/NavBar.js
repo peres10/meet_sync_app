@@ -16,6 +16,7 @@ import EditProfileScreen from "../screens/EditProfile";
 import NewEventScreen from "../screens/NewEventScreen";
 import NewGroupScreen from "../screens/NewGroupScreen"
 import AddParticipantsScreen from "../screens/SelectParticipantsScreen";
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createStackNavigator();
 
@@ -50,6 +51,13 @@ const FriendsScreenWithFooter = () => (
 const GroupsScreenWithFooter = () => (
   <GradientBackground style={{ flex: 1 }}>
     <GroupsScreen />
+    <CustomFooter />
+  </GradientBackground>
+);
+
+const ChatScreenWithFooter = () => (
+  <GradientBackground style={{ flex: 1 }}>
+    <ChatScreen />
     <CustomFooter />
   </GradientBackground>
 );
@@ -252,6 +260,10 @@ const NavBar = ({ onLogout }) => {
       <Stack.Screen
         name="SelectParticipantsScreen"
         component={AddParticipantsScreen}
+      />
+       <Stack.Screen
+        name="ChatScreen"
+        component={ChatScreen}
       />
     </Stack.Navigator>
   );

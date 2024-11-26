@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import profilePics from "../utils/profilePics";
@@ -42,6 +49,13 @@ const FriendProfileScreen = () => {
           <Text style={styles.userDetails}>
             <Ionicons name="location" size={16} /> {user.location || "N/A"}
           </Text>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={() => navigation.navigate("ChatScreen", { destinatary: user })}
+          >
+             <Ionicons name="mail" size={16} color="#fff" />
+            <Text style={styles.saveButtonText}>Send Message</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -102,6 +116,21 @@ const styles = StyleSheet.create({
     color: "#777",
     marginVertical: 4,
     flexDirection: "row",
+  },
+  saveButton: {
+    backgroundColor: "#3fb59e",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+    paddingHorizontal: "5%",
+    width: "100%",
+    top: 20,
+  },
+  saveButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

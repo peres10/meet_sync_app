@@ -96,6 +96,7 @@ const CombinedFriendsScreen = () => {
               <TouchableOpacity
                 style={styles.participantContainer}
                 onPress={() =>
+                  // navigation.navigate("ChatScreen", { destinatary: item })
                   navigation.navigate("FriendProfile", { user: item })
                 }
               >

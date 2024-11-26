@@ -9,7 +9,7 @@
   FOX3: require("../assets/profile_pics/FOX3.webp"),
   HEDGEHOG: require("../assets/profile_pics/HEDGEHOG.webp"),
   OWL: require("../assets/profile_pics/OWL.webp"),
-  OWL_2: require("../assets/profile_pics/OWL_2.webp"),
+  OWL2: require("../assets/profile_pics/OWL2.webp"),
   PENGUIN: require("../assets/profile_pics/PENGUIN.webp"),
   PUFFIN: require("../assets/profile_pics/PUFFIN.webp"),
   RABBIT: require("../assets/profile_pics/RABBIT.webp"),
